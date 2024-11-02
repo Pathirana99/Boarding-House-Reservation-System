@@ -1,6 +1,7 @@
 package com.example.testing.controller;
 
 import com.example.testing.dto.LoginUserDto;
+import com.example.testing.dto.MailDto;
 import com.example.testing.dto.ReturnLoginUserDto;
 import com.example.testing.service.LoginUserService;
 import com.example.testing.utill.JWTAuthenticator;
@@ -31,12 +32,12 @@ public class LoginUserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateLoginUser(@PathVariable Integer id, @RequestBody LoginUserDto loginuser){
-       LoginUserDto update = service.updateLoginUser(id, loginuser);
-        if(update != null) {
-            return new ResponseEntity<>(loginuser, HttpStatus.OK);
+    public ResponseEntity<Object> updateLoginUser(@PathVariable Integer id, @RequestBody LoginUserDto loginUserDto){
+        LoginUserDto updatedUser = service.updateLoginUser(id, loginUserDto);
+        if(updatedUser != null) {
+            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
         }
-        return new ResponseEntity<>("not found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
     }
     @GetMapping("/getAllLoginuser")
     public ResponseEntity<List<LoginUserDto>> getAllLoginUser(){
@@ -58,5 +59,54 @@ public class LoginUserController {
             return new ResponseEntity<>("deleted", HttpStatus.OK);
         }
         return new ResponseEntity<>("not found", HttpStatus.NOT_FOUND);
+    }
+    @PostMapping("/forgotPassword")
+    public ResponseEntity<String> sendVerificationCode(@RequestBody MailDto mailDto) {
+        boolean isSent = service.sendVerificationCode(mailDto.getTomail());
+        if (isSent) {
+            return new ResponseEntity<>("Verification code sent to email.", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Email not registered.", HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/resetPassword")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
+        boolean isReset = service.resetPassword(request.getEmail(), request.getCode(), request.getNewPassword());
+        if (isReset) {
+            return new ResponseEntity<>("Password reset successfully.", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Invalid code or email.", HttpStatus.BAD_REQUEST);
+    }
+
+    // DTO for Reset Password Request
+    public static class ResetPasswordRequest {
+        private String email;
+        private String code;
+        private String newPassword;
+
+        // Getters and Setters
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public String getNewPassword() {
+            return newPassword;
+        }
+
+        public void setNewPassword(String newPassword) {
+            this.newPassword = newPassword;
+        }
     }
 }

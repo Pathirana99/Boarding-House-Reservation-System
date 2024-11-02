@@ -35,4 +35,5 @@ public class LoginUser {
 
     public LoginUser(Integer id, Integer contactNo, String password, String email, String name) {
     }
+
 }

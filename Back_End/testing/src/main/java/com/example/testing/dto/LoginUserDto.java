@@ -14,4 +14,7 @@ public class LoginUserDto {
     private String email;
     public String role;
     private String name;
+
+    public LoginUserDto(Integer id, Integer contactNo, String password, String email, String role) {
+    }
 }
