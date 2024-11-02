@@ -59,6 +59,7 @@ public class BoardingOwner {
         this.name = name;
     }
 
+
     public String getEmail() {
         return email;
     }

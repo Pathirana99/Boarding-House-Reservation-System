@@ -38,4 +38,5 @@ public class BoardingOwnerController {
     public List<BoardingHouseDto> getBoardingHousesByOwner(@PathVariable Integer ownerId) {
         return service.getBoardingHousesByOwner(ownerId);
     }
+
 }

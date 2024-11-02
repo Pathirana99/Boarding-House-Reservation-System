@@ -51,7 +51,8 @@ public class BoardingHouseController {
     }
     @PostMapping("/{boardingHouseId}/uploadImages")
     public ResponseEntity<String> uploadImages(@PathVariable Integer boardingHouseId,
-                                               @RequestParam("files") MultipartFile[] files) {
+                                               @RequestParam("files") MultipartFile[] files)
+    {
         try {
             service.saveImages(boardingHouseId, files);
             return new ResponseEntity<>("Images uploaded successfully!", HttpStatus.OK);
