@@ -13,21 +13,23 @@ public class LoginUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private String name;
     private Integer contactNo;
     private String password;
     private String email;
     private String role;
-    private String name;
+
 
     @OneToOne(mappedBy = "loginUser", cascade = CascadeType.ALL)
     private BoardingOwner boardingOwner;
 
-    public LoginUser(Integer contactNo, String password, String email, String role, String name) {
+    public LoginUser(String name, Integer contactNo, String password, String email, String role) {
+        this.name = name;
         this.contactNo = contactNo;
         this.password = password;
         this.email = email;
         this.role = role;
-        this.name = name;
+
     }
 
     public LoginUser(Integer id, Integer contactNo, String password, String email) {

@@ -38,5 +38,15 @@ public class BoardingOwnerController {
     public List<BoardingHouseDto> getBoardingHousesByOwner(@PathVariable Integer ownerId) {
         return service.getBoardingHousesByOwner(ownerId);
     }
-
+    @PostMapping("/saveOwner")
+    public ResponseEntity<?> saveBoardingOwner(@RequestBody BoardingOwnerDto ownerDto) {
+        try {
+            BoardingOwner savedOwner = service.saveBoardingOwner(ownerDto);
+            return new ResponseEntity<>(savedOwner, HttpStatus.CREATED);
+        } catch (Exception e) {
+            // Log the error message and stack trace
+            e.printStackTrace();
+            return new ResponseEntity<>("Error occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
