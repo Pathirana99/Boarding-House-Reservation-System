@@ -17,17 +17,22 @@ public class LoginUser {
     private String password;
     private String email;
     private String role;
+    private String name;
 
     @OneToOne(mappedBy = "loginUser", cascade = CascadeType.ALL)
     private BoardingOwner boardingOwner;
 
-    public LoginUser(Integer contactNo, String password, String email, String role) {
+    public LoginUser(Integer contactNo, String password, String email, String role, String name) {
         this.contactNo = contactNo;
         this.password = password;
         this.email = email;
         this.role = role;
+        this.name = name;
     }
 
     public LoginUser(Integer id, Integer contactNo, String password, String email) {
+    }
+
+    public LoginUser(Integer id, Integer contactNo, String password, String email, String name) {
     }
 }

@@ -6,11 +6,6 @@ import com.example.testing.entity.LoginUser;
 import com.example.testing.repo.LoginUserRepo;
 import com.example.testing.utill.SignInMail;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,14 +30,14 @@ public class LoginUserService {
         }
 
         LoginUser save = loginUserRepo.save(
-                new LoginUser(loginUserDto.getContactNo(),encodedPassword,loginUserDto.getEmail(),loginUserDto.getRole()));
+                new LoginUser(loginUserDto.getContactNo(),encodedPassword,loginUserDto.getEmail(),loginUserDto.getRole(), loginUserDto.getPassword()));
         signInMail.sendEmail(loginUserDto);
         return new ReturnLoginUserDto(save.getEmail(), save.getId());
     }
     public LoginUserDto updateLoginUser(Integer id, LoginUserDto loginUserDto){
         if(loginUserRepo.existsById(id)){
-            LoginUser update = loginUserRepo.save(new LoginUser(id, loginUserDto.getContactNo(), loginUserDto.getPassword(), loginUserDto.getEmail()));
-            return new LoginUserDto(update.getId(), update.getContactNo(), update.getPassword(), update.getEmail(), update.getRole());
+            LoginUser update = loginUserRepo.save(new LoginUser(id, loginUserDto.getContactNo(), loginUserDto.getPassword(), loginUserDto.getEmail(), loginUserDto.getName()));
+            return new LoginUserDto(update.getId(), update.getContactNo(), update.getPassword(), update.getEmail(), update.getRole(), update.getPassword());
         }
         return null;
     }
@@ -51,7 +46,7 @@ public class LoginUserService {
 
         List<LoginUserDto> loginUserDtos = new ArrayList<>();
         for(LoginUser loginUser : all){
-            loginUserDtos.add(new LoginUserDto(loginUser.getId(), loginUser.getContactNo(), loginUser.getPassword(), loginUser.getEmail(), loginUser.getRole()));
+            loginUserDtos.add(new LoginUserDto(loginUser.getId(), loginUser.getContactNo(), loginUser.getPassword(), loginUser.getEmail(), loginUser.getRole(), loginUser.getPassword()));
         }
         return loginUserDtos;
     }
@@ -62,7 +57,8 @@ public class LoginUserService {
                         loginUser.getContactNo(),
                         loginUser.getPassword(),
                         loginUser.getEmail(),
-                        loginUser.getRole()))
+                        loginUser.getRole(),
+                        loginUser.getName()))
                 .orElse(null);
     }
 
