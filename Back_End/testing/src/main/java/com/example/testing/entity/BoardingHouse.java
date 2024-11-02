@@ -28,6 +28,9 @@ public class BoardingHouse {
     private Double price;
     private String email;
 
+    @OneToMany(mappedBy = "boardingHouse", cascade = CascadeType.ALL)
+    private List<Image> images = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "boarding_owner_id", nullable = false)
     private BoardingOwner boardingOwner;

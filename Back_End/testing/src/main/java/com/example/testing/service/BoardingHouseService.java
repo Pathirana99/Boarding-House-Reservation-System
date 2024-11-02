@@ -1,10 +1,14 @@
 package com.example.testing.service;
 
 import com.example.testing.dto.BoardingHouseDto;
+import com.example.testing.dto.FacilityDto;
+import com.example.testing.dto.RoomDto;
 import com.example.testing.entity.BoardingHouse;
 import com.example.testing.entity.BoardingOwner;
+import com.example.testing.entity.Image;
 import com.example.testing.repo.BoardingHouseRepo;
 import com.example.testing.repo.BoardingOwnerRepo;
+import com.example.testing.repo.ImageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,9 @@ public class BoardingHouseService {
 
     @Autowired
     BoardingOwnerRepo boardingOwnerRepo;
+
+    @Autowired
+    ImageRepo imageRepo;
 
     public BoardingHouseDto saveBoardingHouse(BoardingHouseDto boardingHouseDTO, Integer ownerId) {
         BoardingOwner boardingOwner = boardingOwnerRepo.findById(ownerId)
@@ -53,8 +60,36 @@ public class BoardingHouseService {
     }
 
     public List<BoardingHouseDto> getAllBoardingHouses() {
-       List<BoardingHouse> boardingHouses = boardingHouseRepo.findAll();
-        return boardingHouses.stream().map(this::convertToDto).collect(Collectors.toList());
+        List<BoardingHouse> boardingHouses = boardingHouseRepo.findAll();
+        return boardingHouses.stream().map(this::convertToDtoWithDetails).collect(Collectors.toList());
+    }
+
+    private BoardingHouseDto convertToDtoWithDetails(BoardingHouse boardingHouse) {
+        BoardingHouseDto dto = new BoardingHouseDto();
+        dto.setId(boardingHouse.getId());
+        dto.setTitle(boardingHouse.getTitle());
+        dto.setType(boardingHouse.getType());
+        dto.setPhone(boardingHouse.getPhone());
+        dto.setLocation(boardingHouse.getLocation());
+        dto.setDescription(boardingHouse.getDescription());
+        dto.setCity(boardingHouse.getCity());
+        dto.setStreet(boardingHouse.getStreet());
+        dto.setPrice(boardingHouse.getPrice());
+        dto.setEmail(boardingHouse.getEmail());
+
+        // Convert Room entities to RoomDto
+        List<RoomDto> roomDtos = boardingHouse.getRooms().stream()
+                .map(room -> new RoomDto(room.getId(), room.getTitle(), room.getCapacity(), room.getIsavailable()))
+                .collect(Collectors.toList());
+        dto.setRooms(roomDtos);
+
+        // Convert Facility entities to FacilityDto
+        List<FacilityDto> facilityDtos = boardingHouse.getFacilities().stream()
+                .map(facility -> new FacilityDto(facility.getId(), facility.getName()))
+                .collect(Collectors.toList());
+        dto.setFacilities(facilityDtos);
+
+        return dto;
     }
     public BoardingHouseDto updateBoarding(Integer id, BoardingHouseDto boardingHouseDto) {
         Optional<BoardingHouse> existingBoardingHouse = boardingHouseRepo.findById(id);
@@ -114,16 +149,27 @@ public class BoardingHouseService {
 
     // Method to save uploaded images
     public void saveImages(Integer boardingHouseId, MultipartFile[] files) throws IOException {
+        BoardingHouse boardingHouse = boardingHouseRepo.findById(boardingHouseId)
+                .orElseThrow(() -> new IllegalArgumentException("BoardingHouse not found"));
+
         Path boardingHousePath = Paths.get(uploadDirectory + boardingHouseId);
-        // Create directory if it doesn't exist
         if (!Files.exists(boardingHousePath)) {
             Files.createDirectories(boardingHousePath);
         }
 
+        List<Image> savedImages = new ArrayList<>();
         for (MultipartFile file : files) {
             Path filePath = boardingHousePath.resolve(file.getOriginalFilename());
             file.transferTo(filePath);
+
+            // Save each image path and associate it with the BoardingHouse
+            Image image = new Image();
+            image.setFilePath(filePath.toString());
+            image.setBoardingHouse(boardingHouse);
+            savedImages.add(image);
         }
+
+        imageRepo.saveAll(savedImages);
     }
 
     // Method to get all image paths for a boarding house
