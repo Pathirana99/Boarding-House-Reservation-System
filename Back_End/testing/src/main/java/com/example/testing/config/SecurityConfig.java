@@ -1,6 +1,7 @@
 package com.example.testing.config;
 
 import com.example.testing.service.SignInService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,12 +19,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Autowired
     JwtFilter jwtFilter;
+    @Autowired
     private final SignInService signInService;
 
     public SecurityConfig(JwtFilter jwtFilter, SignInService signInService) {
@@ -49,7 +56,26 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .build();
     }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable()) // Disable CSRF, consider enabling it in production
+                .cors(cors -> cors.disable()) // Disable CORS for now; configure if needed
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/loginuser/saveLoginUser", "/SignInUser/SignIn",
+                                "/boardingHouse/saveBoarding", "/saveOwnerWithHousesAndRooms/{loginUserId}",
+                                "/boardingHouse/{ownerId}/houses", "/owner/{ownerId}/houses",
+                                "/boardingHouse/getAllBoarding", "/boardingHouse/{id}/updateBoarding",
+                                "/rooms/{boardingHouseId}/room", "/rooms/getRooms").permitAll()
+                        .requestMatchers("/boardingHouse/city/{city}", "/loginuser/{id}").hasRole("USER")
+                        .anyRequest().authenticated()
+                )
+                .formLogin(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults());
 
+        return http.build();
+    }
+/*
 @Bean
 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
@@ -64,7 +90,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
                             "/boardingHouse/{id}/updateBoarding",
                             "/rooms/{boardingHouseId}/room",
                             "/rooms/getRooms").permitAll()
-                    //.requestMatchers("/boardingHouse/city/{city}").hasRole("USER")
+                    .requestMatchers("/boardingHouse/city/{city}","/loginuser/{id}").hasRole("USER")
                     //.requestMatchers("/boardingHouse/city/{city}").hasRole("OWNER")
                    //.requestMatchers("/boardingHouse/{id}/updateBoarding").permitAll()
                    // .requestMatchers("/loginuser/saveLoginUser").hasRole("USER")// Allow unauthenticated access to this endpoint
@@ -76,12 +102,13 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
                     .permitAll()         // Allow access to login page
             )
 
-             */
+
             .formLogin(Customizer.withDefaults())
             .httpBasic(Customizer.withDefaults());
 
     return http.build();
 }
+*/
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = User.withUsername("user")
@@ -107,4 +134,5 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
     }
 
      */
+
 }

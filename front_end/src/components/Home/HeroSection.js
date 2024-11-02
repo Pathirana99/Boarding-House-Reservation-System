@@ -8,7 +8,7 @@ export default function HeroSection() {
     <div className="hero-container">
         <div className="image-section">
            
-            <img src="/images/1.4.jpg" alt="Home Section" />
+            <img src="/images/1.4.webp" alt="Home Section" />
 
          <div className="text-section">
              <p>Find your perfect home <br /> away from home</p>

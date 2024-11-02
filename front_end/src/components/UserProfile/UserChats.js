@@ -14,7 +14,7 @@ const UserChats = () => {
     setConversations([
       { id: 1, user: 'Owner1', boardingHouse: 'Sunnyvale Apartments' },
       { id: 2, user: 'Owner2', boardingHouse: 'Green Villa' },
-      { id: 3, user: 'Owner3', boardingHouse: 'Blue Ridge Annex' },
+      { id: 3, user: 'Sunil Jayathissa', boardingHouse: 'Blue Ridge Annex' },
     ]);
   }, []);
 

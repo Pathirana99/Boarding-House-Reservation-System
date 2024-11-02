@@ -1,24 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import axios from 'axios';
 import { TextField, Button, Typography, Container, Grid } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-// Sample hard-coded data representing owner information from the database
-const ownerData = {
-  ownerId: 'O12345',
-  email: 'owner@example.com',
-  name: 'Kamal Jayathissa',
-  phoneNumbers: ['0714567890', '0727654321'],
-};
-
-const OwnerAccount = () => {
-  const [ownerId] = useState(ownerData.ownerId);
-  const [email] = useState(ownerData.email);
-  const [name, setName] = useState(ownerData.name);
-  const [phoneNumbers, setPhoneNumbers] = useState(ownerData.phoneNumbers);
+const OwnerAccount = ({userId}) => {
+  const [email,setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [phoneNumbers, setPhoneNumbers] = useState([]);
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  const [editMode, setEditMode] = useState(false); // Track edit mode for details
+  const [editMode, setEditMode] = useState(false); 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem('token'); // Retrieve token from local storage
+
+      try {
+        // Make an API request to fetch user data using the passed userId prop
+        const response = await axios.get(`http://localhost:8080/loginuser/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Update the state with user data
+        const { email, name,contact_no } = response.data;
+        setEmail(email);
+        setName(name);
+        setPhoneNumbers(Array.isArray(contact_no) ? contact_no : contact_no.split(',').map(num => num.trim()));
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+        if (error.response?.status === 401) {
+          navigate('/login'); // Redirect to login on unauthorized error
+        }
+      }
+    };
+
+    if (userId) { // Ensure userId is defined before making the request
+      fetchData();
+    }
+  }, [userId, navigate]);
+
 
   const handleEditDetails = () => {
     setEditMode(!editMode);
@@ -62,7 +87,7 @@ const OwnerAccount = () => {
       {/* Display owner details */}
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="h6" >Owner ID: {ownerId}</Typography>
+          <Typography variant="h6" >Owner ID: {userId}</Typography>
         </Grid>
         <Grid item xs={12}>
           <Typography variant="h6">Email: {email}</Typography>

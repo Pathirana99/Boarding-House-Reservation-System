@@ -1,21 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import axios from 'axios';
 import { TextField, Button, Typography, Container, Grid } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
-// Sample hard-coded data representing owner information from the database
-const userData = {
-  userId: 'O12345',
-  email: 'user@example.com',
-  name: 'Kamal Jayathissa',
-};
-
-const UserAccount = () => {
-  const [userId] = useState(userData.ownerId);
-  const [email] = useState(userData.email);
-  const [name] = useState(userData.name);
+const UserAccount = ({userId}) => {
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem('token'); // Retrieve token from local storage
+
+      try {
+        // Make an API request to fetch user data using the passed userId prop
+        const response = await axios.get(`http://localhost:8080/loginuser/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Update the state with user data
+        const { email, name } = response.data;
+        setEmail(email);
+        setName(name);
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+        if (error.response?.status === 401) {
+          navigate('/login'); // Redirect to login on unauthorized error
+        }
+      }
+    };
+
+    if (userId) { // Ensure userId is defined before making the request
+      fetchData();
+    }
+  }, [userId, navigate]);
+
 
   const handleChangePassword = (e) => {
     e.preventDefault();
