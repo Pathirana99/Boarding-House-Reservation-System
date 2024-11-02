@@ -10,6 +10,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import './userProfile.css';
 
 const UserProfile = () => {
+  const userId = localStorage.getItem('userId');
   const [activeMenuItem, setActiveMenuItem] = useState('Profile');
   const [isSidebarVisible, setSidebarVisible] = useState(false);
 
@@ -68,6 +69,7 @@ const UserProfile = () => {
         <div className="userprofile-content">
           {/* Content can go here */}
           <UserContent 
+          userId={userId}
           activeMenuItem={activeMenuItem} 
           setActiveMenuItem={setActiveMenuItem} 
         />

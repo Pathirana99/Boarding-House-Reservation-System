@@ -10,7 +10,7 @@ const Contact = () => {
   return (
     <Container maxWidth="md" className="contactus-container">
       <Box className="contactus-header">
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" gutterBottom sx={{fontFamily: '"Josefin Sans", sans-serif', fontSize:"43px"}}>
           Contact Us
         </Typography>
       </Box>
@@ -21,28 +21,28 @@ const Contact = () => {
           <Box className="contactus-info">
             <Box className="contactus-item">
               <LocationOnIcon className="contactus-icon" />
-              <Typography variant="body1" fontWeight="bold">Address</Typography>
+              <Typography variant="body1" fontWeight="bold" fontSize="20px" sx={{fontFamily: '"Josefin Sans", sans-serif'}}>Address</Typography>
             </Box>
-            <Typography variant="body2" className="contactus-text">No.64, Main Street, Matata</Typography>
+            <Typography variant="body2" className="contactus-text" fontSize="18px" fontWeight="600" sx={{fontFamily: '"Josefin Sans", sans-serif'}}>No.64, Main Street, Matata</Typography>
 
             <Box className="contactus-item">
               <PhoneIcon className="contactus-icon" />
-              <Typography variant="body1" fontWeight="bold">Phone</Typography>
+              <Typography variant="body1" fontWeight="bold" fontSize="20px" sx={{fontFamily: '"Josefin Sans", sans-serif'}}>Phone</Typography>
             </Box>
-            <Typography variant="body2" className="contactus-text">(+94) 718 535 288</Typography>
+            <Typography variant="body2" className="contactus-text" fontSize="18px" fontWeight="600" sx={{fontFamily: '"Josefin Sans", sans-serif'}}>(+94) 718 535 288</Typography>
 
             <Box className="contactus-item">
               <EmailIcon className="contactus-icon" />
-              <Typography variant="body1" fontWeight="bold">Email</Typography>
+              <Typography variant="body1" fontWeight="bold" fontSize="20px" sx={{fontFamily: '"Josefin Sans", sans-serif'}}>Email</Typography>
             </Box>
-            <Typography variant="body2" className="contactus-text">Bdoor@gmail.com</Typography>
+            <Typography variant="body2" className="contactus-text" fontSize="18px" fontWeight="600" sx={{fontFamily: '"Josefin Sans", sans-serif'}}>Bdoor@gmail.com</Typography>
           </Box>
         </Grid>
 
         {/* Right side: Send Message Form */}
         <Grid item xs={12} md={6}>
           <Box component="form" noValidate autoComplete="off" className="contactus-send-message-form">
-            <Typography variant="h5" gutterBottom textAlign="center">
+            <Typography variant="h5" gutterBottom textAlign="center" sx={{fontFamily: '"Josefin Sans", sans-serif'}}>
               Send Message
             </Typography>
             <TextField

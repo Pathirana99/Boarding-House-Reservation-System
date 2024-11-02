@@ -11,6 +11,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import './ownerProfile.css';
 
 const OwnerProfile = () => {
+  const userId = localStorage.getItem('userId');
   const [activeMenuItem, setActiveMenuItem] = useState('Posted Adds');
   const [isSidebarVisible, setSidebarVisible] = useState(false);
 
@@ -75,6 +76,7 @@ const OwnerProfile = () => {
         <div className="ownerprofile-content">
           {/* Content can go here */}
           <OwnerContent 
+          userId={userId}
           activeMenuItem={activeMenuItem} 
           setActiveMenuItem={setActiveMenuItem} 
         />

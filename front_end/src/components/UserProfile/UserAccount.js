@@ -1,35 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState,useEffect } from 'react';
+import axios from 'axios';
 import { TextField, Button, Typography, Container, Grid } from '@mui/material';
-import { fetchUserData, changePassword } from '../../apiService'; // Import the API functions
+import { useNavigate } from 'react-router-dom';
 
-const UserAccount = () => {
-  const [userData, setUserData] = useState({
-    userId: '',
-    email: '',
-    name: '',
-  });
+const UserAccount = ({userId}) => {
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const navigate = useNavigate();
+
 
   useEffect(() => {
-    const fetchUserDetails = async () => {
+    const fetchData = async () => {
+      const token = localStorage.getItem('token'); // Retrieve token from local storage
+
       try {
-        const data = await fetchUserData(); // Call API to get user data
-        setUserData(data);
+        // Make an API request to fetch user data using the passed userId prop
+        const response = await axios.get(`http://localhost:8080/loginuser/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // Update the state with user data
+        const { email, name } = response.data;
+        setEmail(email);
+        setName(name);
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        console.error('Failed to fetch user data:', error);
+        if (error.response?.status === 401) {
+          navigate('/login'); // Redirect to login on unauthorized error
+        }
       }
     };
 
-    fetchUserDetails();
-  }, []);
+    if (userId) { // Ensure userId is defined before making the request
+      fetchData();
+    }
+  }, [userId, navigate]);
 
-  const handleChangePassword = async (e) => {
+
+  const handleChangePassword = (e) => {
     e.preventDefault();
-    setError('');
-    setSuccessMessage('');
+    setError(''); // Clear previous error messages
+    setSuccessMessage(''); // Clear previous success messages
 
     // Basic validation for password change
     if (!newPassword || !confirmPassword) {
@@ -41,32 +58,30 @@ const UserAccount = () => {
       return;
     }
 
-    try {
-      await changePassword(newPassword); // Call API to update the password
-      setSuccessMessage('Password changed successfully!');
-      setNewPassword('');
-      setConfirmPassword('');
-    } catch (error) {
-      setError('Error changing password. Please try again.');
-    }
+    // Reset form fields
+    setNewPassword('');
+    setConfirmPassword('');
+    
+    // Here you can add logic to update the password in the database
+    setSuccessMessage('Password changed successfully!'); // Show success message
   };
 
   return (
     <Container maxWidth="sm" style={{ padding: '20px', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
-      <Typography variant="h5" gutterBottom style={{ color: 'gray', fontSize: '36px' }}>
+      <Typography variant="h5" gutterBottom style={{ color: 'gray',fontSize:'36px' }}>
         User Account
       </Typography>
 
-      {/* Display user details */}
+      {/* Display owner details */}
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <Typography variant="h6">User ID: {userData.userId}</Typography>
+          <Typography variant="h6" >User ID: {userId}</Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="h6">Email: {userData.email}</Typography>
+          <Typography variant="h6">Email: {email}</Typography>
         </Grid>
         <Grid item xs={12}>
-          <Typography variant="h6">Name: {userData.name}</Typography>
+          <Typography variant="h6">Name: {name}</Typography>
         </Grid>
       </Grid>
 

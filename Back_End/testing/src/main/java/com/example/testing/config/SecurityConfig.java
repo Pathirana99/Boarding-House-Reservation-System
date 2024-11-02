@@ -55,7 +55,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
     http
             .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for simplicity, consider enabling in production
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers( "/loginuser/saveLoginUser","/SignInUser/SignIn",
+                    .requestMatchers( "/loginuser/saveLoginUser","/SignInUser/SignIn","/loginuser/getAllLoginuser","/loginuser/{id}",
                             "/boardingHouse/saveBoarding",
                             "/saveOwnerWithHousesAndRooms/{loginUserId}",
                             "/boardingHouse/{ownerId}/houses",
