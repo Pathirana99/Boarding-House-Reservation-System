@@ -40,7 +40,7 @@ public class LoginUserController {
         return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
     }
     @GetMapping("/getAllLoginuser")
-    public ResponseEntity<List<LoginUserDto>> getAllLoginUser(){
+    public ResponseEntity<List<LoginUserDto>> getAllLoginUser() {
         List<LoginUserDto> allLoginUser = service.getAllLoginUser();
         return new ResponseEntity<>(allLoginUser, HttpStatus.OK);
     }

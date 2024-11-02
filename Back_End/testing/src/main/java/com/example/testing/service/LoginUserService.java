@@ -38,7 +38,8 @@ public class LoginUserService {
         }
 
         LoginUser save = loginUserRepo.save(
-                new LoginUser(loginUserDto.getContactNo(),encodedPassword,loginUserDto.getEmail(),loginUserDto.getRole(), loginUserDto.getPassword()));
+                new LoginUser(loginUserDto.getName(),loginUserDto.getContactNo(),encodedPassword, loginUserDto.getEmail(), loginUserDto.getRole()));
+                //new LoginUser(loginUserDto.getContactNo(),encodedPassword,loginUserDto.getEmail(),loginUserDto.getRole(), loginUserDto.getPassword()));
         signInMail.sendEmail(loginUserDto);
         return new ReturnLoginUserDto(save.getEmail(), save.getId());
     }
@@ -57,13 +58,21 @@ public class LoginUserService {
         }
         return null;
     }
-    public List<LoginUserDto> getAllLoginUser(){
+    public List<LoginUserDto> getAllLoginUser() {
         List<LoginUser> all = loginUserRepo.findAll();
-
         List<LoginUserDto> loginUserDtos = new ArrayList<>();
-        for(LoginUser loginUser : all){
-            loginUserDtos.add(new LoginUserDto(loginUser.getId(), loginUser.getContactNo(), loginUser.getPassword(), loginUser.getEmail(), loginUser.getRole(), loginUser.getPassword()));
+
+        for (LoginUser loginUser : all) {
+            loginUserDtos.add(new LoginUserDto(
+                    loginUser.getId(),
+                    loginUser.getContactNo(),
+                    loginUser.getPassword(),
+                    loginUser.getEmail(),
+                    loginUser.getRole(),
+                    loginUser.getName()  // Correctly mapping the `name` field
+            ));
         }
+
         return loginUserDtos;
     }
     public LoginUserDto getLoginUserById(Integer id) {
@@ -77,7 +86,6 @@ public class LoginUserService {
                         loginUser.getName()))
                 .orElse(null);
     }
-
     public int deleteLoginUser(Integer id){
         if (loginUserRepo.existsById(id)){
             loginUserRepo.deleteById(id);
