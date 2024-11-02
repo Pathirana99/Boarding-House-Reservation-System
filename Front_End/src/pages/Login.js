@@ -57,25 +57,31 @@ const handleSignIn = async (e) => {
 
   try {
       // Send a POST request to the backend API
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/SignInUser/SignIn`, {
+      const response = await axios.post(`http://localhost:8080/SignInUser/SignIn`, {
           email,
           password,
       });
+      const token = response.data.jwt;
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      console.log('Decoded token:', decodedToken);
+      const { userId, role } = decodedToken;
 
-      const { role } = response.data; // Assuming your backend returns a user object with a role
-
-      console.log('Email login successful');
-
-      // Store authentication token in localStorage
-      localStorage.setItem('authToken', response.data.token); // Assuming the token is returned
-
-      // Redirect based on user role
-      if (role === 'user') {
+      localStorage.setItem('token', token);
+      localStorage.setItem('role', role);
+      localStorage.setItem('userId', userId);
+      
+      switch (role) {
+        case 'User':
           navigate('/userprofile');
-      } else if (role === 'owner') {
+          break;
+        case 'Owner':
           navigate('/ownerprofile');
-      } else if (role === 'admin') {
+          break;
+        case 'Admin':
           navigate('/adminprofile');
+          break;
+        default:
+          navigate('/'); // Fallback in case role is unrecognized
       }
   } catch (error) {
       if (error.response) {

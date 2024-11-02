@@ -14,4 +14,5 @@ public class LoginUserDto {
     private String email;
     public String role;
 
+    
 }

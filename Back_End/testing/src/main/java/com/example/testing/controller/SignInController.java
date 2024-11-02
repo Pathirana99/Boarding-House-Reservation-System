@@ -41,6 +41,7 @@ public class SignInController {
             // Generate JWT token
             final String jwt = jwtUtil.generateToken(userDetails, user.getEmail(), user.getRole(), user.getId());
 
+
             // Create response with both JWT and role
             AuthenticationResponse authResponse = new AuthenticationResponse(jwt, user.getRole());
             return ResponseEntity.ok(authResponse);
