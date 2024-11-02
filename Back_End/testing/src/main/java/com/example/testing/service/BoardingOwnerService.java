@@ -108,4 +108,14 @@ public class BoardingOwnerService {
         dto.setEmail(boardingHouse.getEmail());
         return dto;
     }
+    public BoardingOwner saveBoardingOwner(BoardingOwnerDto ownerDto) {
+        // Create a new BoardingOwner instance and set only the required fields
+        BoardingOwner boardingOwner = new BoardingOwner();
+        boardingOwner.setName(ownerDto.getName());
+        boardingOwner.setEmail(ownerDto.getEmail());
+        boardingOwner.setPassword(ownerDto.getPassword());
+
+        // Save and return the BoardingOwner instance
+        return boardingOwnerRepo.save(boardingOwner);
+    }
 }
