@@ -21,32 +21,32 @@ public class BoardingOwnerController {
     BoardingHouseService houseService;
 
 
-    @PostMapping("/saveOwnerWithHousesAndRooms/{loginUserId}")
-    public ResponseEntity<?> saveOwnerWithHousesAndRooms(
+    public BoardingOwnerController(BoardingOwnerService boardingOwnerService) {
+        this.service = boardingOwnerService;
+    }
+
+    @PostMapping("/save/{loginUserId}")
+    public ResponseEntity<BoardingOwner> saveOwnerWithHousesAndRooms(
             @PathVariable Integer loginUserId,
-            @RequestBody BoardingOwnerDto ownerDto) {
-        try {
-            BoardingOwner savedOwner = service.saveOwnerWithHousesAndRooms(loginUserId, ownerDto);
-            return new ResponseEntity<>(savedOwner, HttpStatus.CREATED);
-        } catch (Exception e) {
-            // Log the error message and stack trace
-            e.printStackTrace();
-            return new ResponseEntity<>("Error occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            @RequestBody BoardingOwnerDto dto) {
+        BoardingOwner savedOwner = service.saveOwnerWithHousesAndRooms(loginUserId, dto);
+        return ResponseEntity.ok(savedOwner);
     }
+
     @GetMapping("/{ownerId}/houses")
-    public List<BoardingHouseDto> getBoardingHousesByOwner(@PathVariable Integer ownerId) {
-        return service.getBoardingHousesByOwner(ownerId);
+    public ResponseEntity<List<BoardingHouseDto>> getBoardingHousesByOwner(@PathVariable Integer ownerId) {
+        List<BoardingHouseDto> boardingHouses = service.getBoardingHousesByOwner(ownerId);
+        return ResponseEntity.ok(boardingHouses);
     }
+
     @PostMapping("/saveOwner")
-    public ResponseEntity<?> saveBoardingOwner(@RequestBody BoardingOwnerDto ownerDto) {
+    public ResponseEntity<BoardingOwner> saveBoardingOwner(@RequestBody BoardingOwnerDto ownerDto) {
         try {
             BoardingOwner savedOwner = service.saveBoardingOwner(ownerDto);
             return new ResponseEntity<>(savedOwner, HttpStatus.CREATED);
         } catch (Exception e) {
-            // Log the error message and stack trace
             e.printStackTrace();
-            return new ResponseEntity<>("Error occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
