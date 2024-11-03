@@ -30,6 +30,8 @@ public class ChatController {
 
     @GetMapping("/history/{userId}")
     public ResponseEntity<List<ChatDto>> getChatHistoryByUserId(@PathVariable Integer userId) {
-        return ResponseEntity.ok(chatService.getChatHistoryByUserId(userId));
+        List<ChatDto> chatHistory = chatService.getChatHistoryByUserId(userId);
+        return ResponseEntity.ok(chatHistory);
     }
+
 }

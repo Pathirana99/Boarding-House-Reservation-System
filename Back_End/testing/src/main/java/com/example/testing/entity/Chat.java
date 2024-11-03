@@ -20,9 +20,11 @@ public class Chat {
     private LoginUser sender;
 
     @ManyToOne
+    @JoinColumn(name = "boarding_house_id")
     private BoardingHouse boardingHouse;
 
     private String message;
+
     private LocalDateTime timestamp = LocalDateTime.now();
 
     public Chat(LoginUser sender, BoardingHouse boardingHouse, String message) {

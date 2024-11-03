@@ -26,25 +26,39 @@ public class ChatService {
     }
 
     public ChatDto saveMessage(Integer senderId, Integer boardingHouseId, String message) {
-        LoginUser sender = loginUserRepo.findById(senderId).orElseThrow();
-        BoardingHouse boardingHouse = boardingHouseRepo.findById(boardingHouseId).orElseThrow();
+        LoginUser sender = loginUserRepo.findById(senderId).orElseThrow(() -> new RuntimeException("User not found"));
+        BoardingHouse boardingHouse = boardingHouseRepo.findById(boardingHouseId).orElseThrow(() -> new RuntimeException("Boarding house not found"));
 
         Chat chat = new Chat(sender, boardingHouse, message);
         chatRepo.save(chat);
 
-        return new ChatDto(senderId, boardingHouseId, message, chat.getTimestamp());
+        return new ChatDto(chat.getId(), senderId, boardingHouseId, message, chat.getTimestamp());
     }
 
     public List<ChatDto> getAllChats() {
-        return chatRepo.findAll().stream()
-                .map(chat -> new ChatDto(chat.getSender().getId(), chat.getBoardingHouse().getId(), chat.getMessage(), chat.getTimestamp()))
+        List<Chat> chats = chatRepo.findAll(); // Assuming this fetches all chats
+
+        return chats.stream()
+                .map(chat -> {
+                    Integer senderId = chat.getSender() != null ? chat.getSender().getId() : null;
+                    Integer boardingHouseId = chat.getBoardingHouse() != null ? chat.getBoardingHouse().getId() : null;
+                    return new ChatDto(chat.getId(), senderId, boardingHouseId, chat.getMessage(), chat.getTimestamp());
+                })
                 .collect(Collectors.toList());
     }
 
+
     public List<ChatDto> getChatHistoryByUserId(Integer userId) {
-        LoginUser user = loginUserRepo.findById(userId).orElseThrow();
-        return chatRepo.findBySenderOrBoardingHouse(user, null).stream()
-                .map(chat -> new ChatDto(chat.getSender().getId(), chat.getBoardingHouse().getId(), chat.getMessage(), chat.getTimestamp()))
+        LoginUser user = loginUserRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return chatRepo.findBySender(user).stream()
+                .map(chat -> {
+                    Integer senderId = chat.getSender() != null ? chat.getSender().getId() : null;
+                    Integer boardingHouseId = chat.getBoardingHouse() != null ? chat.getBoardingHouse().getId() : null;
+                    return new ChatDto(chat.getId(), senderId, boardingHouseId, chat.getMessage(), chat.getTimestamp());
+                })
                 .collect(Collectors.toList());
     }
+
 }
