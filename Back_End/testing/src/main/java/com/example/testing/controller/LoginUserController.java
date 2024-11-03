@@ -91,6 +91,11 @@ public class LoginUserController {
         }
         return new ResponseEntity<>("Invalid code or email.", HttpStatus.BAD_REQUEST);
     }
+    @GetMapping("/getAllLoginUsersWithoutAdmin")
+    public ResponseEntity<List<LoginUserDto>> getAllLoginUsersWithoutAdmin() {
+        List<LoginUserDto> allLoginUsers = service.getAllLoginUsersWithoutAdmin();
+        return new ResponseEntity<>(allLoginUsers, HttpStatus.OK);
+    }
 
     // DTO for Reset Password Request
     public static class ResetPasswordRequest {

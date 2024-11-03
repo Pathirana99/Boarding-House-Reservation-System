@@ -146,4 +146,21 @@ public class LoginUserService {
         }
         return false;
     }
+    public List<LoginUserDto> getAllLoginUsersWithoutAdmin() {
+        List<LoginUser> all = loginUserRepo.findByRoleNot("ADMIN");
+        List<LoginUserDto> loginUserDtos = new ArrayList<>();
+
+        for (LoginUser loginUser : all) {
+            loginUserDtos.add(new LoginUserDto(
+                    loginUser.getId(),
+                    loginUser.getContactNo(),
+                    loginUser.getPassword(),
+                    loginUser.getEmail(),
+                    loginUser.getRole(),
+                    loginUser.getName()  // Correctly mapping the `name` field
+            ));
+        }
+
+        return loginUserDtos;
+    }
 }
