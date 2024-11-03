@@ -1,22 +1,43 @@
 import React, { useState } from 'react';
 import '../pages/login.css';
+import axios from 'axios';
 import CloseIcon from '@mui/icons-material/Close';
 
-export default function ChangePasswordPopup({ onClose }) {
+export default function ChangePasswordPopup({ onClose,email,code }) {
+  const [newPassword, setNewPassword] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');  
 
   // Function to check if passwords match
-  const passwordsMatch = password === confirmPassword && password.length > 0;
+  const passwordsMatch = password === newPassword && password.length > 0;
 
-  const handleReset = () => {
+  const handleReset = async () => {
     if (passwordsMatch) {
-      // Here you would typically update the password in the backend
-      onClose();
+      try {
+        const resetRequest = {
+          email: email,
+          code: code, 
+          newPassword: password
+        };
+  
+        console.log("Sending Reset Request:", resetRequest); // Log the payload
+  
+        const response = await axios.post('http://localhost:8080/loginuser/resetPassword', resetRequest);
+        console.log(response); 
+        setSuccess('Password has been reset successfully!');
+        onClose(); // Close the popup after password change
+      } catch (error) {
+        console.error("Error during password reset:", error.response.data); // Log the error response
+        setError('Failed to reset password. Please try again.');
+      }
     } else {
       console.log("Passwords do not match or are empty.");
+      setError('Passwords do not match');
+      return;
     }
   };
+  
 
   return (
     <div className="popup-container">
@@ -33,8 +54,8 @@ export default function ChangePasswordPopup({ onClose }) {
         <input
           type="password"
           placeholder="Confirm new password"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
           className="input-field"
         />
         <button
@@ -44,6 +65,8 @@ export default function ChangePasswordPopup({ onClose }) {
         >
           Reset Password
         </button>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+      {success && <p style={{ color: 'green' }}>{success}</p>}
       </div>
     </div>
   );

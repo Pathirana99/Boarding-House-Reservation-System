@@ -1,23 +1,28 @@
 // ManageOwner.js
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import { Table, TableBody, TableCell, TableContainer,TableSortLabel,TableHead, TableRow,Box,Button, List, ListItem,TextField,DialogActions,IconButton,InputLabel,DialogTitle,DialogContent,Dialog } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import axios from 'axios';
 
 const ManageOwner = ({ setActiveMenuItem }) => {
+  const [owners, setOwners] = useState([]);
     const [newOwner, setNewOwner] = useState({ name: '', email: '', phone: [''], totalListings: 0 });
     const [openAddOwner, setOpenAddOwner] = useState(false);
+
+    useEffect(() => {
+      axios.get('http://localhost:8080/loginuser/getAllLoginuser')
+        .then(response => {
+          setOwners(response.data);
+        })
+        .catch(error => {
+          console.error("There was an error fetching the owners!", error);
+        });
+    }, []);
 
     const handleViewBoardingPlaces = () => {
         setActiveMenuItem('Manage Boarding Places'); // Navigate to "Manage Boarding Places"
       };
-
-  // Sample data for the table with multiple phone numbers
-  const [owners, setOwners] = useState([
-    { id: 1, name: 'Saman Kumara', email: 'saman@example.com', phone: ['071 6107523', '076 2225482'], totalListings: 5 },
-    { id: 2, name: 'Tharidu Dilshan', email: 'Tharidu@example.com', phone: ['074 2535866'], totalListings: 3 },
-    // Add more data as needed
-  ]);
 
   const handleAddOwner = () => {
     setNewOwner({ name: '', email: '', phone: [''], totalListings: 0 }); // Reset new user details
@@ -92,7 +97,7 @@ const handleSaveNewOwner = () => {
                 <TableCell sx={{fontFamily:'"Josefin Sans", sans-serif',fontSize:'20px'}}>{owner.email}</TableCell>
                 <TableCell sx={{fontFamily:'"Josefin Sans", sans-serif',fontSize:'20px'}}>
                   <List dense>
-                    {owner.phone.map((phoneNumber, index) => (
+                  {(owner.phone || []).map((phoneNumber, index) => (
                       <ListItem key={index} style={{ padding: 0 }}>{phoneNumber}</ListItem>
                     ))}
                   </List>

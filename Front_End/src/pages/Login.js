@@ -15,6 +15,7 @@ export default function Login() {
   const navigate = useNavigate(); // Initialize navigate function
   const [email, setEmail] = useState(''); // State for email input
   const [password, setPassword] = useState('');
+  const [code, setCode] = useState('');
   const location = useLocation(); 
   const [error, setError] = useState(''); // State to show login errors
 
@@ -149,9 +150,9 @@ const handleSignIn = async (e) => {
         </div>
       </div>
 
-      {step === 'forgot' && <ForgotPasswordPopup onClose={closePopup} onNext={openEnterCode} />}
-      {step === 'code' && <EnterCodePopup onClose={closePopup} onNext={openChangePassword} />}
-      {step === 'change' && <ChangePasswordPopup onClose={closePopup} />}
+      {step === 'forgot' && <ForgotPasswordPopup onClose={closePopup} onNext={openEnterCode} setEmail={setEmail} />}
+      {step === 'code' && <EnterCodePopup onClose={closePopup} onNext={openChangePassword} setCode={setCode}/>}
+      {step === 'change' && <ChangePasswordPopup onClose={closePopup} email={email} code={code} />}
     </div>
   );
 }
