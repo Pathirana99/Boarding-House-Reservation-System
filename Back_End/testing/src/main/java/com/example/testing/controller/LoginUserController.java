@@ -128,4 +128,8 @@ public class LoginUserController {
             this.newPassword = newPassword;
         }
     }
+    @GetMapping("/count")
+    public long countAllLoginUsers() {
+        return service.countAllLoginUsers();
+    }
 }

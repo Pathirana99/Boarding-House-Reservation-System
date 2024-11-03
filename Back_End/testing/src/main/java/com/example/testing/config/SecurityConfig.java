@@ -65,9 +65,23 @@ public class SecurityConfig {
                         .requestMatchers("/boardingHouse/city/{city}", "/loginuser/{id}").hasRole("USER")
                         .anyRequest().authenticated()
                 )
-                .formLogin(Customizer.withDefaults())
-                .oauth2Login(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults());
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/home", true)
+                        .permitAll()
+                )
+                .httpBasic(Customizer.withDefaults())
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/home")
+                        .failureUrl("/login?error=true")
+                        .authorizationEndpoint(authorization -> authorization
+                                .baseUri("/oauth2/authorize")
+                        )
+                        .redirectionEndpoint(redirection -> redirection
+                                .baseUri("/login/oauth2/code/*")
+                        )
+                );
 
         return http.build();
     }

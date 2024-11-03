@@ -163,4 +163,7 @@ public class LoginUserService {
 
         return loginUserDtos;
     }
+    public long countAllLoginUsers() {
+        return loginUserRepo.count();
+    }
 }

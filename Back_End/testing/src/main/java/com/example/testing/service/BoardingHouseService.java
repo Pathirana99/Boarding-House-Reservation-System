@@ -202,4 +202,7 @@ public class BoardingHouseService {
             return null; // Return null if file doesn't exist
         }
     }
+    public long countAllHouses() {
+        return boardingHouseRepo.count();
+    }
 }
