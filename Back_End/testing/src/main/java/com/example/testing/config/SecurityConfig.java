@@ -11,7 +11,6 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,11 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.web.SecurityFilterChain;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -71,44 +66,12 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .formLogin(Customizer.withDefaults())
+                .oauth2Login(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());
 
         return http.build();
     }
-/*
-@Bean
-public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http
-            .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for simplicity, consider enabling in production
-            .authorizeHttpRequests(auth -> auth
-                    .requestMatchers( "/loginuser/saveLoginUser","/SignInUser/SignIn","/loginuser/getAllLoginuser","/boardingHouse/{boardingHouseId}/uploadImages",
-                            "/boardingHouse/saveBoarding",
-                            "/saveOwnerWithHousesAndRooms/{loginUserId}",
-                            "/boardingHouse/{ownerId}/houses",
-                            "/owner/{ownerId}/houses",
-                            "/boardingHouse/getAllBoarding",
-                            "/boardingHouse/{id}/updateBoarding",
-                            "/rooms/{boardingHouseId}/room",
-                            "/rooms/getRooms").permitAll()
-                    .requestMatchers("/boardingHouse/city/{city}","/loginuser/{id}").hasRole("USER")
-                    //.requestMatchers("/boardingHouse/city/{city}").hasRole("OWNER")
-                   //.requestMatchers("/boardingHouse/{id}/updateBoarding").permitAll()
-                   // .requestMatchers("/loginuser/saveLoginUser").hasRole("USER")// Allow unauthenticated access to this endpoint
-                    .anyRequest().authenticated() // All other requests require authentication
-            )
-            /*
-            .formLogin(form -> form
-                    .loginPage("/login") // Specify custom login page if necessary
-                    .permitAll()         // Allow access to login page
-            )
 
-
-            .formLogin(Customizer.withDefaults())
-            .httpBasic(Customizer.withDefaults());
-
-    return http.build();
-}
-*/
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = User.withUsername("user")

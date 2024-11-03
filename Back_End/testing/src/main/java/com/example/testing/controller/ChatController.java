@@ -18,17 +18,18 @@ public class ChatController {
     }
 
     @PostMapping("/sendMessage")
-    public ResponseEntity<ChatDto> sendMessage(@RequestBody ChatDto chatDto) {
-        ChatDto savedMessage = chatService.saveMessage(chatDto.getSenderId(), chatDto.getReceiverId(), chatDto.getMessage());
+    public ResponseEntity<ChatDto> sendMessage(@RequestParam Integer senderId, @RequestParam Integer boardingHouseId, @RequestBody String message) {
+        ChatDto savedMessage = chatService.saveMessage(senderId, boardingHouseId, message);
         return ResponseEntity.ok(savedMessage);
     }
 
-    @GetMapping("/history")
-    public ResponseEntity<List<ChatDto>> getChatHistory(
-            @RequestParam Integer user1Id,
-            @RequestParam Integer user2Id) {
+    @GetMapping("/all")
+    public ResponseEntity<List<ChatDto>> getAllChats() {
+        return ResponseEntity.ok(chatService.getAllChats());
+    }
 
-        List<ChatDto> chatHistory = chatService.getChatHistory(user1Id, user2Id);
-        return ResponseEntity.ok(chatHistory);
+    @GetMapping("/history/{userId}")
+    public ResponseEntity<List<ChatDto>> getChatHistoryByUserId(@PathVariable Integer userId) {
+        return ResponseEntity.ok(chatService.getChatHistoryByUserId(userId));
     }
 }

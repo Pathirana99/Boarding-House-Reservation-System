@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -57,6 +58,16 @@ public class LoginUserService {
             }
         }
         return null;
+    }
+    public boolean updatePassword(Integer id, String newPassword) {
+        Optional<LoginUser> userOptional = loginUserRepo.findById(id);
+        if (userOptional.isPresent()) {
+            LoginUser user = userOptional.get();
+            user.setPassword(passwordEncoder.encode(newPassword));
+            loginUserRepo.save(user);
+            return true;
+        }
+        return false;
     }
     public List<LoginUserDto> getAllLoginUser() {
         List<LoginUser> all = loginUserRepo.findAll();

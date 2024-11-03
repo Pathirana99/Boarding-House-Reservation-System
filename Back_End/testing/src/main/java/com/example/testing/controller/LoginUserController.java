@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -36,6 +37,19 @@ public class LoginUserController {
         LoginUserDto updatedUser = service.updateLoginUser(id, loginUserDto);
         if(updatedUser != null) {
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+    }
+    @PutMapping("/{id}/updatePassword")
+    public ResponseEntity<Object> updatePassword(@PathVariable Integer id, @RequestBody Map<String, String> request) {
+        String newPassword = request.get("newPassword");
+        if (newPassword == null || newPassword.isEmpty()) {
+            return new ResponseEntity<>("New password is required", HttpStatus.BAD_REQUEST);
+        }
+
+        boolean isUpdated = service.updatePassword(id, newPassword);
+        if (isUpdated) {
+            return new ResponseEntity<>("Password updated successfully", HttpStatus.OK);
         }
         return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
     }
