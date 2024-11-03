@@ -79,7 +79,7 @@ const ManageUser = () => {
             return;
         }
         try {
-            await axios.post('http://localhost:8080/loginuser', newUser);
+            await axios.post('http://localhost:8080/loginuser/saveLoginUser', newUser);
             fetchUsers();
             setOpenAddUser(false);
         } catch (error) {

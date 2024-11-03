@@ -2,21 +2,21 @@ import React, { useState } from 'react';
 import '../pages/login.css';
 import CloseIcon from '@mui/icons-material/Close';
 
-export default function EnterCodePopup({ onClose, onNext }) {
-  const [code, setCode] = useState('');
+export default function EnterCodePopup({ onClose, onNext,setCode}) {
+  const [code, setLocalCode] = useState('');
 
   const handleChange = (e) => {
     const value = e.target.value;
 
     // Allow only numeric input and restrict to 6 digits
     if (/^\d{0,6}$/.test(value)) {
-      setCode(value);
+      setLocalCode(value);
     }
   };
 
   const handleConfirm = () => {
     if (code.length === 6) {
-      // Here you would typically verify the code with the backend
+      setCode(code);
       onNext();
     } else {
       // Optionally, handle the case where the code is not 6 digits
