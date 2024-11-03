@@ -91,4 +91,8 @@ public class BoardingHouseController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/count")
+    public long countAllHouses() {
+        return service.countAllHouses();
+    }
 }

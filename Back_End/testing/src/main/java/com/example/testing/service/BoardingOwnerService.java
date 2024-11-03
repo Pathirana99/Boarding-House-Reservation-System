@@ -122,4 +122,7 @@ public class BoardingOwnerService {
 
         return dto;
     }
+    public long countAllOwners() {
+        return boardingOwnerRepo.count();
+    }
 }

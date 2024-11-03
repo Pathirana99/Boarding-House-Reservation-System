@@ -49,4 +49,8 @@ public class BoardingOwnerController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/count")
+    public long countAllOwners() {
+        return service.countAllOwners();
+    }
 }
