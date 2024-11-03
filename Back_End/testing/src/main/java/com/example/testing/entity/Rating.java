@@ -27,4 +27,52 @@ public class Rating {
     @ManyToOne
     @JoinColumn(name = "login_user_id", nullable = false)
     private LoginUser user; // User who gave the rating
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getUserRating() {
+        return userRating;
+    }
+
+    public void setUserRating(Integer userRating) {
+        this.userRating = userRating;
+    }
+
+    public String getStayStatus() {
+        return stayStatus;
+    }
+
+    public void setStayStatus(String stayStatus) {
+        this.stayStatus = stayStatus;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public BoardingHouse getBoardingHouse() {
+        return boardingHouse;
+    }
+
+    public void setBoardingHouse(BoardingHouse boardingHouse) {
+        this.boardingHouse = boardingHouse;
+    }
+
+    public LoginUser getUser() {
+        return user;
+    }
+
+    public void setUser(LoginUser user) {
+        this.user = user;
+    }
 }
