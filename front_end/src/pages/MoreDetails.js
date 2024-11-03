@@ -1,6 +1,6 @@
 import React,{useState, useRef} from 'react';
 import { Typography, Button,Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,Rating} from '@mui/material';
-import { useLocation } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 import './moreDetails.css';
 import NavigationBar from '../components/NavigationBar';
@@ -13,8 +13,12 @@ import RateDialog from '../components/RateDialog';
 export default function MoreDetails() {
   const { state } = useLocation();
   const { place } = state || {};
+  const navigate = useNavigate(); 
 
   const [isRateDialogOpen, setIsRateDialogOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  
+  const isAuthenticated = localStorage.getItem('token') !== null;
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: 'AIzaSyAZVdMOfQEqb3T04P_-HTMR_Vg4aTIoVz8', // Add your API key here
@@ -22,7 +26,6 @@ export default function MoreDetails() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const thumbnailRef = useRef();
-  const [isChatOpen, setIsChatOpen] = useState(false);
 
   if (!place) {
     return <Typography>Place not found</Typography>;
@@ -61,7 +64,12 @@ export default function MoreDetails() {
   };
 
   const handleOpenChat = () => {
-    setIsChatOpen(true);
+    if (isAuthenticated) {
+      setIsChatOpen(true);
+    } else {
+      localStorage.setItem('redirectAfterLogin', window.location.pathname); // Store current path
+      navigate('/login');
+    }
   };
 
   const handleCloseChat = () => {
@@ -69,7 +77,12 @@ export default function MoreDetails() {
   };
 
   const handleOpenRateDialog = () => {
-    setIsRateDialogOpen(true);
+    if (isAuthenticated) {
+      setIsRateDialogOpen(true);
+    } else {
+      localStorage.setItem('redirectAfterLogin', window.location.pathname); // Store current path
+      navigate('/login'); 
+    }
   };
 
   const handleCloseRateDialog = () => {
