@@ -19,7 +19,6 @@ public class ChatDto {
     private String message;
     private LocalDateTime timestamp;
 
-    // Constructor
     public ChatDto(Integer id, Integer userId, Integer boardingHouseId, String message, LocalDateTime timestamp) {
         this.id = id;
         this.userId = userId;
@@ -27,8 +26,6 @@ public class ChatDto {
         this.message = message;
         this.timestamp = timestamp;
     }
-    // Add any additional constructors if needed, ensuring they have different parameters
-    // For example:
     public ChatDto(Integer userId, Integer boardingHouseId, String message) {
         this.userId = userId;
         this.boardingHouseId = boardingHouseId;

@@ -19,21 +19,18 @@ public class RatingController {
         this.ratingService = ratingService;
     }
 
-    // Endpoint to submit a rating
     @PostMapping("/submit")
     public ResponseEntity<Rating> submitRating(@RequestBody Rating rating) {
         Rating savedRating = ratingService.saveRating(rating);
         return ResponseEntity.ok(savedRating);
     }
 
-    // Endpoint to get ratings for a specific boarding house
     @GetMapping("/boardingHouse/{boardingHouseId}")
     public ResponseEntity<List<RatingDto>> getRatingsByBoardingHouseId(@PathVariable Integer boardingHouseId) {
         List<RatingDto> ratings = ratingService.getRatingsByBoardingHouseId(boardingHouseId);
         return ResponseEntity.ok(ratings);
     }
 
-    // Endpoint to get ratings by LoginUser ID
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<RatingDto>> getRatingsByUserId(@PathVariable Integer userId) {
         List<RatingDto> ratings = ratingService.getRatingsByUserId(userId);

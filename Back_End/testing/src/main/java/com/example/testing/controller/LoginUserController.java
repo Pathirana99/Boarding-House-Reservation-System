@@ -97,13 +97,11 @@ public class LoginUserController {
         return new ResponseEntity<>(allLoginUsers, HttpStatus.OK);
     }
 
-    // DTO for Reset Password Request
     public static class ResetPasswordRequest {
         private String email;
         private String code;
         private String newPassword;
 
-        // Getters and Setters
         public String getEmail() {
             return email;
         }
