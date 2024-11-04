@@ -15,4 +15,7 @@ public class Facility {
     private int id;
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "boarding_house_id")
+    private BoardingHouse boardingHouse;
 }
