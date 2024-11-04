@@ -3,6 +3,7 @@ package com.example.testing.service;
 import com.example.testing.dto.ContactDto;
 import com.example.testing.entity.Contact;
 import com.example.testing.repo.ContactRepo;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -32,6 +33,16 @@ public class ContactService {
 
     public Optional<Contact> getMessage(Integer id){
             return  contactRepo.getContactById(id);
+    }
+
+    public void sendFeedbackEmail(ContactDto contactDto) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setSubject("RATING Bdoor..."); // Set the subject from the front end
+        message.setTo("sunithkaushalya.pp@gmail.com");
+        message.setFrom("sunithkaushalya.pp@gmail.com");
+        message.setText(contactDto.getMessage());
+
+        mailSender.send(message);
     }
 
 }

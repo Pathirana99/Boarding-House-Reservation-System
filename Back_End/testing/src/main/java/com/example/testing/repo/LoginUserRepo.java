@@ -11,4 +11,5 @@ public interface LoginUserRepo extends JpaRepository<LoginUser, Integer> {
     LoginUser findByEmail(String email);
     List<LoginUser> findByRoleNot(String role);
     long count();
+    List<LoginUser> findByRole(String role);
 }

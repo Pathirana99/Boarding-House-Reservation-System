@@ -53,7 +53,7 @@ public class LoginUserController {
         }
         return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
     }
-    @GetMapping("/getAllLoginuser")
+    @GetMapping("/AllLoginuser")
     public ResponseEntity<List<LoginUserDto>> getAllLoginUser() {
         List<LoginUserDto> allLoginUser = service.getAllLoginUser();
         return new ResponseEntity<>(allLoginUser, HttpStatus.OK);
@@ -132,4 +132,10 @@ public class LoginUserController {
     public long countAllLoginUsers() {
         return service.countAllLoginUsers();
     }
+    @GetMapping("/owners")
+    public ResponseEntity<List<LoginUserDto>> getAllOwners() {
+        List<LoginUserDto> owners = service.getAllOwners();
+        return new ResponseEntity<>(owners, HttpStatus.OK);
+    }
+
 }

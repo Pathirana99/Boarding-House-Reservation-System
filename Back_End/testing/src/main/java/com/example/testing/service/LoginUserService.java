@@ -166,4 +166,22 @@ public class LoginUserService {
     public long countAllLoginUsers() {
         return loginUserRepo.count();
     }
+    public List<LoginUserDto> getAllOwners() {
+        List<LoginUser> owners = loginUserRepo.findByRole("OWNER");
+        List<LoginUserDto> ownerDtos = new ArrayList<>();
+
+        for (LoginUser owner : owners) {
+            ownerDtos.add(new LoginUserDto(
+                    owner.getId(),
+                    owner.getContactNo(),
+                    owner.getPassword(),
+                    owner.getEmail(),
+                    owner.getRole(),
+                    owner.getName()
+            ));
+        }
+
+        return ownerDtos;
+    }
+
 }
