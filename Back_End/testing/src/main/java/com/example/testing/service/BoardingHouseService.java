@@ -1,11 +1,13 @@
 package com.example.testing.service;
 
 import com.example.testing.dto.BoardingHouseDto;
+import com.example.testing.dto.BoardingOwnerDto;
 import com.example.testing.dto.FacilityDto;
 import com.example.testing.dto.RoomDto;
 import com.example.testing.entity.BoardingHouse;
 import com.example.testing.entity.BoardingOwner;
 import com.example.testing.entity.Image;
+import com.example.testing.entity.Room;
 import com.example.testing.repo.BoardingHouseRepo;
 import com.example.testing.repo.BoardingOwnerRepo;
 import com.example.testing.repo.ImageRepo;
@@ -35,25 +37,61 @@ public class BoardingHouseService {
     @Autowired
     ImageRepo imageRepo;
 
-    public BoardingHouseDto saveBoardingHouse(BoardingHouseDto boardingHouseDTO, Integer ownerId) {
-        BoardingOwner boardingOwner = boardingOwnerRepo.findById(ownerId)
-                .orElseThrow(() -> new RuntimeException("Owner not found"));
-
-        BoardingHouse boardingHouse = new BoardingHouse();
-        boardingHouse.setTitle(boardingHouseDTO.getTitle());
-        boardingHouse.setType(boardingHouseDTO.getType());
-        boardingHouse.setPhone(boardingHouseDTO.getPhone());
-        boardingHouse.setLocation(boardingHouseDTO.getLocation());
-        boardingHouse.setDescription(boardingHouseDTO.getDescription());
-        boardingHouse.setCity(boardingHouseDTO.getCity());
-        boardingHouse.setStreet(boardingHouseDTO.getStreet());
-        boardingHouse.setPrice(boardingHouseDTO.getPrice());
-        boardingHouse.setBoardingOwner(boardingOwner);
-
-        boardingHouse = boardingHouseRepo.save(boardingHouse);
-        boardingHouseDTO.setId(boardingHouse.getId());
-        return boardingHouseDTO;
+    public BoardingHouseService(BoardingHouseRepo boardingHouseRepo, BoardingOwnerRepo boardingOwnerRepo) {
+        this.boardingHouseRepo = boardingHouseRepo;
+        this.boardingOwnerRepo = boardingOwnerRepo;
     }
+
+    public BoardingOwner saveOwnerWithHousesAndRooms(BoardingOwnerDto ownerDto, List<BoardingHouseDto> boardingHouseDtos, Integer userId) {
+        BoardingOwner boardingOwner = new BoardingOwner();
+        boardingOwner.setName(ownerDto.getName());
+        boardingOwner.setEmail(ownerDto.getEmail());
+        boardingOwner.setPassword(ownerDto.getPassword()); // Handle password encryption if necessary
+
+        // Save the BoardingOwner first to get the ID
+        BoardingOwner savedOwner = boardingOwnerRepo.save(boardingOwner);
+
+        // Loop through the BoardingHouseDtos to save each BoardingHouse
+        for (BoardingHouseDto houseDto : boardingHouseDtos) {
+            BoardingHouse boardingHouse = new BoardingHouse();
+            boardingHouse.setTitle(houseDto.getTitle());
+            boardingHouse.setType(houseDto.getType());
+            boardingHouse.setPhone(houseDto.getPhone());
+            boardingHouse.setLocation(houseDto.getLocation());
+            boardingHouse.setDescription(houseDto.getDescription());
+            boardingHouse.setCity(houseDto.getCity());
+            boardingHouse.setStreet(houseDto.getStreet());
+            boardingHouse.setPrice(houseDto.getPrice());
+            boardingHouse.setEmail(houseDto.getEmail());
+            boardingHouse.setBoardingOwner(savedOwner); // Set the owner
+            boardingHouse.setDistance(houseDto.getDistance());
+            boardingHouse.setLatitude(houseDto.getLatitude());
+            boardingHouse.setLongitude(houseDto.getLongitude());
+            boardingHouse.setUniversity(houseDto.getUniversity());
+            boardingHouse.setRentDuration(houseDto.getRentDuration());
+            boardingHouse.setAdvancePayment(houseDto.getAdvancePayment());
+            boardingHouse.setAdvancePaymentDuration(houseDto.getAdvancePaymentDuration());
+            boardingHouse.setBillsIncluded(houseDto.getBillsIncluded());
+
+            // Save the BoardingHouse and link it to the owner
+            BoardingHouse savedHouse = boardingHouseRepo.save(boardingHouse);
+
+            // Save Rooms for the BoardingHouse
+            for (BoardingHouseDto.RoomInfo roomDto : houseDto.getRooms()) {
+                Room room = new Room();
+                room.setTitle(roomDto.getTitle());
+                room.setCapacity(String.valueOf(roomDto.getCapacity()));
+                room.setIsAvailable(roomDto.getIsAvailable());
+                room.setBoardingHouse(savedHouse); // Set the link to the boarding house
+
+                // Save each room
+                // Save room to your room repository here (not shown)
+            }
+        }
+
+        return savedOwner; // Return the saved owner with associated boarding houses
+    }
+
     public List<BoardingHouseDto> getBoardingHousesByCity(String city) {
         List<BoardingHouse> boardingHouses = boardingHouseRepo.findByCity(city);
         return boardingHouses.stream().map(this::convertToDto).collect(Collectors.toList());
@@ -61,36 +99,9 @@ public class BoardingHouseService {
 
     public List<BoardingHouseDto> getAllBoardingHouses() {
         List<BoardingHouse> boardingHouses = boardingHouseRepo.findAll();
-        return boardingHouses.stream().map(this::convertToDtoWithDetails).collect(Collectors.toList());
+        return boardingHouses.stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
-    private BoardingHouseDto convertToDtoWithDetails(BoardingHouse boardingHouse) {
-        BoardingHouseDto dto = new BoardingHouseDto();
-        dto.setId(boardingHouse.getId());
-        dto.setTitle(boardingHouse.getTitle());
-        dto.setType(boardingHouse.getType());
-        dto.setPhone(boardingHouse.getPhone());
-        dto.setLocation(boardingHouse.getLocation());
-        dto.setDescription(boardingHouse.getDescription());
-        dto.setCity(boardingHouse.getCity());
-        dto.setStreet(boardingHouse.getStreet());
-        dto.setPrice(boardingHouse.getPrice());
-        dto.setEmail(boardingHouse.getEmail());
-
-        // Convert Room entities to RoomDto
-        List<RoomDto> roomDtos = boardingHouse.getRooms().stream()
-                .map(room -> new RoomDto(room.getId(), room.getTitle(), room.getCapacity(), room.getIsavailable()))
-                .collect(Collectors.toList());
-        dto.setRooms(roomDtos);
-
-        // Convert Facility entities to FacilityDto
-        List<FacilityDto> facilityDtos = boardingHouse.getFacilities().stream()
-                .map(facility -> new FacilityDto(facility.getId(), facility.getName()))
-                .collect(Collectors.toList());
-        dto.setFacilities(facilityDtos);
-
-        return dto;
-    }
     public BoardingHouseDto updateBoarding(Integer id, BoardingHouseDto boardingHouseDto) {
         Optional<BoardingHouse> existingBoardingHouse = boardingHouseRepo.findById(id);
 
@@ -105,44 +116,38 @@ public class BoardingHouseService {
             boardingHouse.setEmail(boardingHouseDto.getEmail());
             boardingHouse.setPrice(boardingHouseDto.getPrice());
             boardingHouse.setStreet(boardingHouseDto.getStreet());
-            boardingHouse.setImage(boardingHouseDto.getImage());
 
-            BoardingHouse updatedBoardingHouse = boardingHouseRepo.save(boardingHouse);
+            // Update and save the boarding house
+            boardingHouseRepo.save(boardingHouse);
+            return convertToDto(boardingHouse);
+        }
+        return null; // Handle not found case as needed
+    }
 
-            return new BoardingHouseDto(
-                    updatedBoardingHouse.getId(),
-                    updatedBoardingHouse.getCity(),
-                    updatedBoardingHouse.getType(),
-                    updatedBoardingHouse.getPhone(),
-                    updatedBoardingHouse.getLocation(),
-                    updatedBoardingHouse.getDescription(),
-                    updatedBoardingHouse.getEmail(),
-                    updatedBoardingHouse.getPrice(),
-                    updatedBoardingHouse.getStreet(),
-                    String.valueOf(updatedBoardingHouse.getImage())
-            );
-        }
-        return null;
+    public void deleteBoardingHouse(Integer id) {
+        boardingHouseRepo.deleteById(id);
     }
-    public int deleteBoarding(Integer id) {
-        if (boardingHouseRepo.existsById(id)) {
-            boardingHouseRepo.deleteById(id);
-            return 1;
-        }
-        return 0;
-    }
+
     private BoardingHouseDto convertToDto(BoardingHouse boardingHouse) {
         BoardingHouseDto dto = new BoardingHouseDto();
         dto.setId(boardingHouse.getId());
         dto.setTitle(boardingHouse.getTitle());
         dto.setType(boardingHouse.getType());
-        dto.setPhone(boardingHouse.getPhone());
         dto.setLocation(boardingHouse.getLocation());
         dto.setDescription(boardingHouse.getDescription());
         dto.setCity(boardingHouse.getCity());
         dto.setStreet(boardingHouse.getStreet());
         dto.setPrice(boardingHouse.getPrice());
         dto.setEmail(boardingHouse.getEmail());
+        dto.setDistance(boardingHouse.getDistance());
+        dto.setLatitude(boardingHouse.getLatitude());
+        dto.setLongitude(boardingHouse.getLongitude());
+        dto.setUniversity(boardingHouse.getUniversity());
+        dto.setRentDuration(boardingHouse.getRentDuration());
+        dto.setAdvancePayment(boardingHouse.getAdvancePayment());
+        dto.setAdvancePaymentDuration(boardingHouse.getAdvancePaymentDuration());
+        dto.setBillsIncluded(boardingHouse.getBillsIncluded());
+
         return dto;
     }
     private final String uploadDirectory = "D:/final project/group project/group-project-cs/Back_End/testing/src/main/resources/uploads/";

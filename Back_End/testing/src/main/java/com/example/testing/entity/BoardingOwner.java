@@ -24,8 +24,8 @@ public class BoardingOwner {
     @OneToMany(mappedBy = "boardingOwner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<BoardingHouse> boardingHouses;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "login_user_id")
+    @OneToOne
+    @JoinColumn(name = "login_user_id", nullable = false)
     private LoginUser loginUser;
 
     public BoardingOwner(String name, String email, String password) {

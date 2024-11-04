@@ -68,4 +68,7 @@ public class Room {
     public void setBoardingHouse(BoardingHouse boardingHouse) {
         this.boardingHouse = boardingHouse;
     }
+
+    public void setIsAvailable(Boolean isAvailable) {
+    }
 }
