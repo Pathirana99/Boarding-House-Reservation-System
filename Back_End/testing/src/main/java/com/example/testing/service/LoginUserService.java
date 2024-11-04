@@ -80,7 +80,7 @@ public class LoginUserService {
                     loginUser.getPassword(),
                     loginUser.getEmail(),
                     loginUser.getRole(),
-                    loginUser.getName()  // Correctly mapping the `name` field
+                    loginUser.getName()
             ));
         }
 
@@ -112,13 +112,11 @@ public class LoginUserService {
         }
         String code = String.format("%06d", new Random().nextInt(999999));
         verificationCodes.put(email, code);
-        // Prepare the email
         MailDto mailDto = new MailDto();
         mailDto.setTomail(email);
         mailDto.setSubject("Password Reset Code");
         mailDto.setMessage("Your password reset code is: " + code);
 
-        // Send the email
         sendEmail(mailDto);
 
         return true;
@@ -157,7 +155,7 @@ public class LoginUserService {
                     loginUser.getPassword(),
                     loginUser.getEmail(),
                     loginUser.getRole(),
-                    loginUser.getName()  // Correctly mapping the `name` field
+                    loginUser.getName()
             ));
         }
 

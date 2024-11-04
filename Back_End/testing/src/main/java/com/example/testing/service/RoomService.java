@@ -23,21 +23,17 @@ public class RoomService {
     BoardingHouseRepo boardingHouseRepo;
 
     public RoomDto saveRoom(RoomDto roomDto, Integer boardingHouseId) {
-        // Find the BoardingHouse entity by ID
         BoardingHouse boardingHouse = boardingHouseRepo.findById(boardingHouseId)
                 .orElseThrow(() -> new RuntimeException("BoardingHouse not found"));
 
-        // Create new Room entity from RoomDto
         Room room = new Room();
         room.setTitle(roomDto.getTitle());
         room.setCapacity(roomDto.getCapacity());
         room.setIsavailable(roomDto.getIsavailable());
         room.setBoardingHouse(boardingHouse);
 
-        // Save room to the repository
         Room savedRoom = roomRepo.save(room);
 
-        // Convert saved Room entity to RoomDto and return
         return new RoomDto(
                 savedRoom.getId(),
                 savedRoom.getTitle(),
@@ -51,12 +47,10 @@ public class RoomService {
                 .map(room -> new RoomDto(room.getId(), room.getTitle(), room.getCapacity(), room.getIsavailable()))
                 .collect(Collectors.toList());
     }
-    // Get a room by ID
     public Optional<Room> getRoomById(Integer id) {
         return roomRepo.findById(id);
     }
 
-    // Update a room
     public Room updateRoom(Integer id, Room roomDetails) {
         Room room = roomRepo.findById(id).orElseThrow(() -> new RuntimeException("Room not found"));
         room.setTitle(roomDetails.getTitle());
@@ -66,7 +60,6 @@ public class RoomService {
         return roomRepo.save(room);
     }
 
-    // Delete a room
     public void deleteRoom(Integer id) {
         Room room = roomRepo.findById(id).orElseThrow(() -> new RuntimeException("Room not found"));
         roomRepo.delete(room);

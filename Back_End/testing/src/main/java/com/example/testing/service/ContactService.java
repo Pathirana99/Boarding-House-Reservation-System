@@ -37,7 +37,7 @@ public class ContactService {
 
     public void sendFeedbackEmail(ContactDto contactDto) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setSubject("RATING Bdoor..."); // Set the subject from the front end
+        message.setSubject("RATING Bdoor...");
         message.setTo("sunithkaushalya.pp@gmail.com");
         message.setFrom("sunithkaushalya.pp@gmail.com");
         message.setText(contactDto.getMessage());

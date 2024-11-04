@@ -15,7 +15,7 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String filePath; // Path to the image in the file system
+    private String filePath;
 
     @ManyToOne
     @JoinColumn(name = "boarding_house_id", nullable = false)

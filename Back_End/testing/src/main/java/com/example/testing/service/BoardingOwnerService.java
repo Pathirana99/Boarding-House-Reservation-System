@@ -28,18 +28,14 @@ public class BoardingOwnerService {
     @Autowired
     FacilityRepo facilityRepo;
 
-    //private final LoginUserRepo loginUserRepo;
-
     public BoardingOwnerService(LoginUserRepo loginUserRepo) {
         this.loginUserRepo = loginUserRepo;
     }
     @Transactional
     public BoardingOwner saveOwnerWithHousesAndRooms(Integer loginUserId, BoardingOwnerDto ownerDto) {
-        // Step 1: Fetch LoginUser by ID
         LoginUser loginUser = loginUserRepo.findById(loginUserId)
                 .orElseThrow(() -> new ResourceNotFoundException("LoginUser not found with ID: " + loginUserId));
 
-        // Step 2: Save BoardingOwner and associate with LoginUser
         BoardingOwner boardingOwner = new BoardingOwner();
         boardingOwner.setName(ownerDto.getName());
         boardingOwner.setEmail(ownerDto.getEmail());
@@ -48,7 +44,6 @@ public class BoardingOwnerService {
 
         BoardingOwner savedOwner = boardingOwnerRepo.save(boardingOwner);
 
-        // Step 3: Save BoardingHouses and associate with BoardingOwner
         for (BoardingHouseDto houseDto : ownerDto.getBoardingHouses()) {
             BoardingHouse boardingHouse = new BoardingHouse();
             boardingHouse.setTitle(houseDto.getTitle());
@@ -64,8 +59,7 @@ public class BoardingOwnerService {
 
             BoardingHouse savedHouse = boardingHouseRepo.save(boardingHouse);
 
-            // Step 4: Save Facilities associated with BoardingHouse
-            if (houseDto.getFacilities() != null) { // Null check added
+            if (houseDto.getFacilities() != null) {
                 for (FacilityDto facilityDto : houseDto.getFacilities()) {
                     Facility facility = new Facility();
                     facility.setName(facilityDto.getName());
@@ -74,8 +68,7 @@ public class BoardingOwnerService {
                 }
             }
 
-            // Step 5: Save Rooms associated with BoardingHouse
-            if (houseDto.getRooms() != null) { // Null check added
+            if (houseDto.getRooms() != null) {
                 for (RoomDto roomDto : houseDto.getRooms()) {
                     Room room = new Room();
                     room.setTitle(roomDto.getTitle());

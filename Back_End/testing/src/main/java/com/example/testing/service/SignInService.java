@@ -24,7 +24,6 @@ public LoginUser findByEmail(String email) {
     return signinRepo.findByEmail(email);
 }
 
-    // Get all users
     public List<LoginUser> getAllUsers() {
         return signinRepo.findAll();
     }
@@ -42,7 +41,7 @@ public LoginUser findByEmail(String email) {
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getEmail())
-                .password(user.getPassword()) // Stored BCrypt encoded password
+                .password(user.getPassword())
                 .authorities(authorities)
                 .build();
     }
