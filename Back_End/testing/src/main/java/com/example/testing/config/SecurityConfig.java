@@ -57,7 +57,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Disable CSRF, consider enabling it in production
                 .cors(cors -> cors.disable()) // Disable CORS for now; configure if needed
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/loginuser/saveLoginUser", "/SignInUser/SignIn","/loginuser/getAllLoginuser","/loginuser/{id}","/loginuser/forgotPassword", "/loginuser/resetPassword","/loginuser/password/",
+                        .requestMatchers("/loginuser/saveLoginUser", "/SignInUser/SignIn","/loginuser/getAllLoginuser","/loginuser/{id}","/loginuser/forgotPassword", "/loginuser/resetPassword","/loginuser/password/","/ratings/submit","/loginuser/{id}/updatePassword",
                                 "/boardingHouse/saveBoarding", "/saveOwnerWithHousesAndRooms/{loginUserId}",
                                 "/boardingHouse/{ownerId}/houses", "/owner/{ownerId}/houses",
                                 "/boardingHouse/getAllBoarding", "/boardingHouse/{id}/updateBoarding",

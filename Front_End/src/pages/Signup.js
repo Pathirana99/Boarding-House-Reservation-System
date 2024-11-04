@@ -62,6 +62,7 @@ export default function Signup() {
     } catch (error) {
       console.error('Sign up failed:', error);
       setError('Sign up failed. Please try again.');
+      return;
     }
   };
 

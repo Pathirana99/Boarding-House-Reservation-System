@@ -1,39 +1,51 @@
 // src/components/RateDialog.js
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useLocation} from 'react-router-dom';
 import {Dialog,DialogActions,DialogContent,DialogTitle,Button,Typography,TextField,Rating,Radio,RadioGroup,FormControlLabel} from '@mui/material';
 
-const RateDialog = ({ open, onClose, onSubmit }) => {
+const RateDialog = ({ open, onClose,onSubmit}) => {
+  const userId = localStorage.getItem('userId');
   const [userRating, setUserRating] = useState(0);  // For capturing rating value
   const [stayStatus, setStayStatus] = useState(''); // For capturing Yes/No if they stayed
   const [fullname, setFullname] = useState(''); // For capturing the user's full name
+  //const { state } = useLocation();
+  //const { place } = state || {};
 
   const handleRateSubmit = async () => {
+     // Validate required fields
+     if (!userRating || !stayStatus || !fullname) {
+      alert('Please fill in all fields before submitting.'); // Alert for incomplete form
+      return;
+    }   
+
     const ratingData = {
-      rating: userRating,
-      stayed: stayStatus,
-      fullname: fullname,
+      user: {
+        id: userId,
+      },
+      userRating,
+      stayStatus,
+      fullname,
     };
 
     try {
-      // Send the data to the backend
-      const response = await fetch('/api/rateBoardingHouse', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(ratingData),
+      const response = await axios.post('http://localhost:3000/ratings/submit', ratingData, {
+
       });
 
       if (response.ok) {
         const result = await response.json();
-        console.log("Rating submitted successfully:", result);
-        onSubmit(ratingData); // Optionally pass the data back to parent component
-        onClose(); // Close the dialog
+        console.log('Rating submitted successfully:', result);
+        onSubmit(ratingData); // Callback to parent component
+        onClose(); // Close dialog
       } else {
-        console.error("Failed to submit rating");
+        const errorData = await response.json();
+        console.error('Failed to submit rating. Status:', response.status, errorData);
+        alert('Failed to submit rating. Please try again.'); // Alert for submission failure
       }
     } catch (error) {
-      console.error("Error submitting rating:", error);
+      console.error('Error submitting rating:', error);
+      alert('An error occurred while submitting your rating. Please try again.'); // Alert for network errors
     }
   };
 
