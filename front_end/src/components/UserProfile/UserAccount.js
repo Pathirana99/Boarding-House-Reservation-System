@@ -43,7 +43,7 @@ const UserAccount = ({userId}) => {
   }, [userId, navigate]);
 
 
-  const handleChangePassword = (e) => {
+  const handleChangePassword = async (e) => {
     e.preventDefault();
     setError(''); // Clear previous error messages
     setSuccessMessage(''); // Clear previous success messages
@@ -58,12 +58,24 @@ const UserAccount = ({userId}) => {
       return;
     }
 
+    try {
+      // Make the API request to change the password
+      const response = await axios.put(`http://localhost:8080/loginuser/${userId}/updatePassword`, {
+        newPassword: newPassword,
+      });
+
+      // Show success message
+      if (response.status === 200) {
+        setSuccessMessage('Password changed successfully!');
+      }
+    } catch (error) {
+      console.error('Failed to change password:', error);
+      setError('Failed to change password. Please try again.');
+    }
+
     // Reset form fields
     setNewPassword('');
     setConfirmPassword('');
-    
-    // Here you can add logic to update the password in the database
-    setSuccessMessage('Password changed successfully!'); // Show success message
   };
 
   return (

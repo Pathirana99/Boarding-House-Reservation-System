@@ -37,7 +37,7 @@ const UserProfile = () => {
         <div className={`userprofile-sidebar ${isSidebarVisible ? 'show-sidebar' : ''}`}>
         <div className="sidebar-header">
           <Avatar className="avatar" />
-          <Typography variant="h6" className="sidebar-title"sx={{margin:'2px',fontFamily:'"Josefin Sans", sans-serif'}} >User</Typography>
+          <Typography variant="h6" className="sidebar-title"sx={{margin:'2px',fontFamily:'"Josefin Sans", sans-serif',fontSize:"12px"}} >ID:{userId}</Typography>
         </div>
         <ul className="sidebar-menu">
             <li
