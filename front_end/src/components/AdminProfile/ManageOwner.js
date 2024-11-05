@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const ManageOwner = ({ setActiveMenuItem }) => {
   const [owners, setOwners] = useState([]);
-    const [newOwner, setNewOwner] = useState({ name: '', email: '', phone: [''], totalListings: 0 });
+    const [newOwner, setNewOwner] = useState({ name: '', email: '', phone: ['']});
     const [openAddOwner, setOpenAddOwner] = useState(false);
 
     useEffect(() => {

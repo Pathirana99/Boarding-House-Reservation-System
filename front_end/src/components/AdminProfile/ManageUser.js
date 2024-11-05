@@ -12,7 +12,7 @@ const ManageUser = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [userIdToDelete, setUserIdToDelete] = useState(null);
     const [openDeleteConfirm, setOpenDeleteConfirm] = useState(false);
-    const [newUser, setNewUser] = useState({ name: '', email: '', password: '', role: '' });
+    const [newUser, setNewUser] = useState({ name: '', email: '', password: '', role: '',contactNo: '' });
     const [openAddUser, setOpenAddUser] = useState(false);
 
     // Fetch the list of users initially
@@ -68,7 +68,7 @@ const ManageUser = () => {
     };
 
     const handleAddUser = () => {
-        setNewUser({ name: '', email: '', password: '', role: '' });
+        setNewUser({ name: '', email: '', password: '', role: '',contactNo: ''});
         setOpenAddUser(true);
     };
 
@@ -185,6 +185,15 @@ const ManageUser = () => {
                         value={selectedUser?.password || ''}
                         onChange={handleInputChange}
                     />
+                    <InputLabel>Phone Number</InputLabel>
+                    <TextField
+                        margin="dense"
+                        name="contactNo"
+                        type="text"
+                        fullWidth
+                        value={selectedUser?.contactNo || ''}
+                        onChange={handleInputChange}
+                    />
                     <InputLabel>Role</InputLabel>
                     <Select
                         name="role"
@@ -244,6 +253,15 @@ const ManageUser = () => {
                         type="password"
                         fullWidth
                         value={newUser.password}
+                        onChange={handleNewUserInputChange}
+                    />
+                     <InputLabel>Phone Number</InputLabel>
+                    <TextField
+                        margin="dense"
+                        name="contactNo"
+                        type="text"
+                        fullWidth
+                        value={newUser.contactNo}
                         onChange={handleNewUserInputChange}
                     />
                     <InputLabel>Role</InputLabel>

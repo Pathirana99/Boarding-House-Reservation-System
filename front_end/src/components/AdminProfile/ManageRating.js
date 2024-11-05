@@ -1,12 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Button,Table, TableRow, TableCell, TableBody, TableHead } from '@mui/material';
-import axios from 'axios';
+import React, { useState } from 'react';
+import { Button, Table, TableRow, TableCell, TableBody, TableHead } from '@mui/material';
 
 const ManageRating = () => {
-  const [pendingRatings, setPendingRatings] = useState([]);
-  //const [selectedRating, setSelectedRating] = useState(null);
+  const [pendingRatings, setPendingRatings] = useState([
+    { id: 1, placeid: '5', userName: 'R.M.Jayarathna', stayed: 'Yes', rating: 4 },
+    { id: 2, placeid: '1', userName: 'L.L.Kusuma', stayed: 'No', rating: 3},
+    { id: 3, placeid: '5', userName: 'P.K.K.Karuna', stayed: 'Yes', rating: 4 },
+    { id: 4, placeid: '3', userName: 'S.K.Diyantha', stayed: 'Yes', rating: 5 },
+    { id: 5, placeid: '2', userName: 'P.K.L.Nadun', stayed: 'No', rating: 2 },
+    { id: 6, placeid: '1', userName: 'S.H.Perera', stayed: 'Yes', rating: 3 }
+  ]);
 
-  useEffect(() => {
+  const handleApprove = (id) => {
+    setPendingRatings(pendingRatings.filter(rating => rating.id !== id)); // Remove from the list
+  };
+
+  const handleReject = (id) => {
+    setPendingRatings(pendingRatings.filter(rating => rating.id !== id)); // Remove from the list
+  };
+  /*useEffect(() => {
     const fetchPendingRatings = async () => {
       try {
         const response = await axios.get('/api/pending-ratings'); // Replace with backend endpoint
@@ -26,7 +38,7 @@ const ManageRating = () => {
   const handleReject = async (id) => {
     await axios.put(`/api/ratings/${id}/reject`);
     setPendingRatings(pendingRatings.filter(rating => rating.id !== id)); // Remove from the list
-  };
+  }; */
 
   return (
     <div>
@@ -53,7 +65,7 @@ const ManageRating = () => {
                 <Button variant="contained" onClick={() => handleApprove(rating.id)} sx={{margin:'5px',backgroundColor:'#72d6c9','&:hover': {backgroundColor:'#3DC0B9'}}}>
                   Approve
                 </Button>
-                <Button  variant="contained" onClick={() => handleReject(rating.id)} sx={{margin:'5px',backgroundColor:'#72d6c9','&:hover': {backgroundColor:'#3DC0B9'}}}>
+                <Button variant="contained" onClick={() => handleReject(rating.id)} sx={{margin:'5px',backgroundColor:'#72d6c9','&:hover': {backgroundColor:'#3DC0B9'}}}>
                   Reject
                 </Button>
               </TableCell>
