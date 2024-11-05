@@ -80,7 +80,7 @@ public class LoginUserService {
                     loginUser.getPassword(),
                     loginUser.getEmail(),
                     loginUser.getRole(),
-                    loginUser.getName()  // Correctly mapping the `name` field
+                    loginUser.getName()
             ));
         }
 
@@ -112,13 +112,11 @@ public class LoginUserService {
         }
         String code = String.format("%06d", new Random().nextInt(999999));
         verificationCodes.put(email, code);
-        // Prepare the email
         MailDto mailDto = new MailDto();
         mailDto.setTomail(email);
         mailDto.setSubject("Password Reset Code");
         mailDto.setMessage("Your password reset code is: " + code);
 
-        // Send the email
         sendEmail(mailDto);
 
         return true;
@@ -157,7 +155,7 @@ public class LoginUserService {
                     loginUser.getPassword(),
                     loginUser.getEmail(),
                     loginUser.getRole(),
-                    loginUser.getName()  // Correctly mapping the `name` field
+                    loginUser.getName()
             ));
         }
 
@@ -166,4 +164,22 @@ public class LoginUserService {
     public long countAllLoginUsers() {
         return loginUserRepo.count();
     }
+    public List<LoginUserDto> getAllOwners() {
+        List<LoginUser> owners = loginUserRepo.findByRole("OWNER");
+        List<LoginUserDto> ownerDtos = new ArrayList<>();
+
+        for (LoginUser owner : owners) {
+            ownerDtos.add(new LoginUserDto(
+                    owner.getId(),
+                    owner.getContactNo(),
+                    owner.getPassword(),
+                    owner.getEmail(),
+                    owner.getRole(),
+                    owner.getName()
+            ));
+        }
+
+        return ownerDtos;
+    }
+
 }

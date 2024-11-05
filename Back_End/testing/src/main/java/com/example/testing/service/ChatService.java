@@ -36,7 +36,7 @@ public class ChatService {
     }
 
     public List<ChatDto> getAllChats() {
-        List<Chat> chats = chatRepo.findAll(); // Assuming this fetches all chats
+        List<Chat> chats = chatRepo.findAll();
 
         return chats.stream()
                 .map(chat -> {

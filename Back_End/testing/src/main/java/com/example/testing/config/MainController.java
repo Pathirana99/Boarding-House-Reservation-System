@@ -8,16 +8,16 @@ public class MainController {
 
     @GetMapping("/")
     public String index() {
-        return "index";  // The public landing page
+        return "index";
     }
 
     @GetMapping("/login")
     public String login() {
-        return "login";  // Custom login page
+        return "login";
     }
 
     @GetMapping("/home")
     public String home() {
-        return "home";  // Redirected after successful login
+        return "home";
     }
 }
