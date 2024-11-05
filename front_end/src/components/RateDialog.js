@@ -1,52 +1,57 @@
 // src/components/RateDialog.js
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useLocation} from 'react-router-dom';
-import {Dialog,DialogActions,DialogContent,DialogTitle,Button,Typography,TextField,Rating,Radio,RadioGroup,FormControlLabel} from '@mui/material';
+import { useLocation } from 'react-router-dom';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Button, Typography, TextField, Rating, Radio, RadioGroup, FormControlLabel } from '@mui/material';
 
-const RateDialog = ({ open, onClose,onSubmit}) => {
-  const userId = localStorage.getItem('userId');
+const RateDialog = ({ open, onClose, onSubmit }) => {
+  const userId = localStorage.getItem('token');
   const [userRating, setUserRating] = useState(0);  // For capturing rating value
   const [stayStatus, setStayStatus] = useState(''); // For capturing Yes/No if they stayed
   const [fullname, setFullname] = useState(''); // For capturing the user's full name
-  //const { state } = useLocation();
-  //const { place } = state || {};
+  const { state } = useLocation();
+  const { place } = state || {};
 
   const handleRateSubmit = async () => {
-     // Validate required fields
-     if (!userRating || !stayStatus || !fullname) {
-      alert('Please fill in all fields before submitting.'); // Alert for incomplete form
+    // Validate required fields
+    if (!userRating || !stayStatus || !fullname) {
+      alert('Please fill in all fields before submitting.');
       return;
-    }   
+    }
+    const token = localStorage.getItem('userId');
 
+    // Prepare the rating data as per the API requirement
     const ratingData = {
-      user: {
-        id: userId,
-      },
       userRating,
       stayStatus,
       fullname,
+      boardingHouse: {
+        id: place?.id, // Assuming `place.id` holds the ID of the boarding house
+      },
+      user: {
+        id: userId,
+      },
     };
 
     try {
-      const response = await axios.post('http://localhost:3000/ratings/submit', ratingData, {
+       // Replace with actual token key
+      const response = await axios.post(
+        'http://localhost:3000/ratings/submit',
+        ratingData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log('Rating submitted successfully:', result);
+      if (response.status === 200) {
+        console.log('Rating submitted successfully:', response.data);
         onSubmit(ratingData); // Callback to parent component
         onClose(); // Close dialog
-      } else {
-        const errorData = await response.json();
-        console.error('Failed to submit rating. Status:', response.status, errorData);
-        alert('Failed to submit rating. Please try again.'); // Alert for submission failure
+    } else {
+        console.error('Failed to submit rating. Status:', response.status, response.data);
       }
     } catch (error) {
       console.error('Error submitting rating:', error);
-      alert('An error occurred while submitting your rating. Please try again.'); // Alert for network errors
     }
+    onClose(); // Close dialog
   };
 
   return (
@@ -62,7 +67,7 @@ const RateDialog = ({ open, onClose,onSubmit}) => {
           onChange={(e) => setStayStatus(e.target.value)}
         >
           <FormControlLabel
-            value="yes"
+            value="completed"
             control={<Radio sx={{ '&.Mui-checked': { color: '#00BFB4' } }} />}
             label="Yes"
           />

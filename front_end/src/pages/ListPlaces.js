@@ -111,7 +111,164 @@ export default function ListPlaces() {
         baths: 1,
         sqft: 500,
         description: 'Cozy single room with air conditioning and laundry services, conveniently located near the University of Colombo. Ideal for students looking for affordable accommodation with all essential services nearby.'
-      }
+      },
+        {
+          id: 3,
+          phone: ["0712345678", "0776543210"],
+          email: "nimal@gmail.com",
+          title: 'Annex near University of Ruhuna',
+          date: "2024-10-15",
+          area: 'University of Ruhuna',
+          price: 10000,
+          rentDuration: 'Per Month',
+          advancePayment: 3000,
+          advancePaymentDuration: 'Months',
+          billsIncluded: 'YES',
+          type: 'Annex',
+          facilities: ['Wi-Fi', 'A/C', 'Cooking'],
+          distance: 2,
+          latitude: 7.2534,
+          longitude: 80.5978,
+          rating: 4,
+          rooms: [
+            {
+              title: "Room 1",
+              capacity: 1,
+              status: "Available Now",
+            }
+          ],
+          imageUrls: [
+             "/images/5.1.jpeg",
+            "/images/5.5.jpeg",
+            "/images/5.5.jpeg",
+            "/images/5.5.jpeg",
+            "/images/5.5.jpeg",
+            "/images/5.5.jpeg"
+          ],
+          beds: 1,
+          baths: 1,
+          sqft: 500,
+          description: 'Cozy one-bedroom annex near the University of Peradeniya, ideal for a student or single professional. Includes Wi-Fi, hot water, and private entrance. Just 1.5 km from the university with nearby access to public transport and essential amenities.'
+        },
+        {
+          id: 4,
+          phone: ["0719988776", "0723344556"],
+          email: "kumar@gmail.com",
+          title: 'Room in Shared House near Sabaragamuwa University',
+          date: "2024-10-20",
+          area: 'ratnapura',
+          price: 8000,
+          rentDuration: 'Per Month',
+          advancePayment: 2000,
+          advancePaymentDuration: 'Months',
+          billsIncluded: 'YES',
+          type: 'Room',
+          facilities: ['Wi-Fi', 'Meal Services', 'Laundry'],
+          distance:5,
+          latitude: 9.6615,
+          longitude: 80.0255,
+          rating: 3,
+          rooms: [
+            {
+              title: "Shared Room",
+              capacity: 1,
+              status: "Available Now",
+            }
+          ],
+          imageUrls: [
+           "/images/5.2.jpeg",
+            "/images/5.6.jpeg",
+            "/images/5.6.jpeg",
+            "/images/5.6.jpeg",
+            "/images/5.6.jpeg",
+            "/images/5.6.jpeg"
+          ],
+          beds: 1,
+          baths: 1,
+          sqft: 300,
+          description: 'Single room in a shared house near Jaffna University, perfect for students. The property includes shared kitchen and laundry facilities, Wi-Fi, and is located in a peaceful area 3 km from the campus.'
+        },
+        {
+          id: 5,
+          phone: ["0781234567", "0779988776"],
+          email: "sanduni@gmail.com",
+          title: 'Luxury Apartment near University of Colombo',
+          date: "2024-10-25",
+          area: 'Colombo',
+          price: 25000,
+          rentDuration: 'Per Month',
+          advancePayment: 7000,
+          advancePaymentDuration: 'Months',
+          billsIncluded: 'NO',
+          type: 'Apartment',
+          facilities: ['Wi-Fi', 'Pet Allowed', 'A/C', 'Parking'],
+          distance: 3,
+          latitude: 6.9271,
+          longitude: 79.8612,
+          rating: 4,
+          rooms: [
+            {
+              title: "Room 1",
+              capacity: 2,
+              status: "Available Now",
+            },
+            {
+              title: "Room 2",
+              capacity: 1,
+              status: "Available Soon",
+            }
+          ],
+          imageUrls: [
+            "/images/5.3.jpeg",
+            "/images/5.7.jpeg",
+            "/images/5.7.jpeg",
+            "/images/5.7.jpeg",
+            "/images/5.7.jpeg",
+            "/images/5.7.jpeg"
+          ],
+          beds: 2,
+          baths: 2,
+          sqft: 1200,
+          description: 'Spacious and modern two-bedroom apartment in central Colombo, offering luxury amenities such as Wi-Fi, gym, air conditioning, and a swimming pool. Ideal for professionals or small families, located 1 km from the University of Colombo.'
+        },
+        {
+          id: 6,
+          phone: ["0712233445", "0776655443"],
+          email: "dinesh@gmail.com",
+          title: 'Single Room in Boarding House near Kelaniya University',
+          date: "2024-10-30",
+          area: 'Kelaniya',
+          price: 6000,
+          rentDuration: 'Per Month',
+          advancePayment: 1500,
+          advancePaymentDuration: 'Months',
+          billsIncluded: 'YES',
+          type: 'Room',
+          facilities: ['Wi-Fi', 'Garden View', 'Cooking'],
+          distance: 1,
+          latitude: 6.9786,
+          longitude: 79.9155,
+          rating: 3,
+          rooms: [
+            {
+              title: "Single Room",
+              capacity: 1,
+              status: "Available Now",
+            }
+          ],
+          imageUrls: [
+            "/images/5.4.jpeg",
+              "/images/5.8.jpeg",
+              "/images/5.8.jpeg",
+              "/images/5.8.jpeg",
+              "/images/5.8.jpeg",
+              "/images/5.8.jpeg"
+          ],
+          beds: 1,
+          baths: 1,
+          sqft: 350,
+          description: 'Comfortable single room in a boarding house near Kelaniya University, suitable for students. Includes breakfast, Wi-Fi, and 24/7 security. Conveniently located within 800 meters of the campus.'
+        },  
   ];
 
   // Filter data based on search parameters

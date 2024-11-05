@@ -69,7 +69,7 @@ const ManagePlaces = () => {
           ownerName: 'Deshan Anurudda',
           rating:5,
           phone: '0718532411',
-          facilities: ['Pool', 'Garage', 'Wi-Fi'],
+          facilities: ['Pet Allowed', 'Balcony', 'Free Wifi'],
           rooms: [
             {
               title: "Room 1",
@@ -94,8 +94,145 @@ const ManagePlaces = () => {
           baths: 1,
           sqft: 500
         },
-        // Add more mock places if needed
-      ];
+          {
+            id: 3,
+            ownerId: 2,
+            title: 'Lotus Villa near Peradeniya University',
+            city: 'Kandy',
+            ownerName: 'Nimal Perera',
+            phone: ["0711122334", "0778765432"],
+            facilities: [' Free Wi-Fi', 'Study Area', 'Washing Machine'],
+            rating: 4,
+            rooms: [
+              {
+                title: "Room 1",
+                capacity: 3,
+                status: "Available Now",
+              },
+              {
+                title: "Room 2",
+                capacity: 2,
+                status: "Available Soon",
+              },
+            ],
+            imageUrls: [
+              "/images/5.1.jpeg",
+            "/images/5.5.jpeg",
+            "/images/5.5.jpeg",
+            "/images/5.5.jpeg",
+            "/images/5.5.jpeg",
+            "/images/5.5.jpeg"
+            ],
+            beds: 5,
+            baths: 3,
+            sqft: 1200,
+          },
+          {
+            id: 4,
+            ownerId: 3,
+            title: 'Greenwood Residencies near Jaffna University',
+            city: 'Jaffna',
+            ownerName: 'Kumar Ratnayake',
+            phone: ["0723456789", "0765432109"],
+            facilities: [' Free Wi-Fi', 'Kitchen', 'Laundry','Pet Allowed'],
+            rating: 4.5,
+            rooms: [
+              {
+                title: "Double Room",
+                capacity: 2,
+                status: "Available Now",
+              },
+              {
+                title: "Single Room",
+                capacity: 1,
+                status: "Not Available",
+              },
+            ],
+            imageUrls: [
+             "/images/5.2.jpeg",
+            "/images/5.6.jpeg",
+            "/images/5.6.jpeg",
+            "/images/5.6.jpeg",
+            "/images/5.6.jpeg",
+            "/images/5.6.jpeg"
+            ],
+            beds: 4,
+            baths: 2,
+            sqft: 900,
+          },
+          {
+            id: 5,
+            ownerId: 4,
+            title: 'Rosewood Apartments near Colombo University',
+            city: 'Colombo',
+            ownerName: 'Ruwan Silva',
+            phone: ["0712345678", "0770987654"],
+            facilities: ['Free Wi-Fi', 'Meal Service', 'Garbage Removal'],
+            rating: 4.7,
+            rooms: [
+              {
+                title: "Double Room",
+                capacity: 2,
+                status: "Available Now",
+              },
+              {
+                title: "Single Room",
+                capacity: 1,
+                status: "Available Soon",
+              },
+            ],
+            imageUrls: [
+              "/images/5.3.jpeg",
+            "/images/5.7.jpeg",
+            "/images/5.7.jpeg",
+            "/images/5.7.jpeg",
+            "/images/5.7.jpeg",
+            "/images/5.7.jpeg"
+            ],
+            beds: 3,
+            baths: 2,
+            sqft: 950,
+          },
+          {
+            id: 6,
+            ownerId: 5,
+            type:'Apartment',
+            title: 'Blue Sky Apartments near Moratuwa University',
+            city: 'Moratuwa',
+            ownerName: 'Sunil Jayasinghe',
+            phone: ["0751122334", "0776677889"],
+            facilities: [' Free Wi-Fi', 'Ac Room', 'CCTV'],
+            rating: 3.9,
+            rooms: [
+              {
+                title: "Room 1",
+                capacity: 2,
+                status: "Available Now"
+              },
+              {
+                title: "Room 2",
+                capacity : 1,
+                status: "Not Available",
+              },
+              {
+                title: "Room 2",
+                capacity: 1,
+                status: "Not Available",
+              }
+            ],
+            imageUrls: [
+              "/images/5.4.jpeg",
+              "/images/5.8.jpeg",
+              "/images/5.8.jpeg",
+              "/images/5.8.jpeg",
+              "/images/5.8.jpeg",
+              "/images/5.8.jpeg"
+            ],
+            beds: 4,
+            baths: 2,
+            sqft: 1100,
+          },
+        ];
 
       try {
         // Simulate an API call delay

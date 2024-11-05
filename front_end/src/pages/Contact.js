@@ -43,7 +43,7 @@ const Contact = () => {
         <Grid item xs={12} md={6}>
           <Box component="form" noValidate autoComplete="off" className="contactus-send-message-form">
             <Typography variant="h5" gutterBottom textAlign="center" sx={{fontFamily: '"Josefin Sans", sans-serif'}}>
-              Send Message
+              Feedback
             </Typography>
             <TextField
               fullWidth

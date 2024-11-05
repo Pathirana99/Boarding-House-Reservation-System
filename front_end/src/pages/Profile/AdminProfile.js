@@ -6,28 +6,13 @@ import './adminProfile.css'; // Import the CSS file
 
 const AdminProfile = () => {
   const [activeMenuItem, setActiveMenuItem] = useState('Dashboard');
-  //const [cardData, setCardData] = useState({});
-
-
-  /*useEffect(() => {
-    const fetchDashboardData = async () => {
-      try {
-        const response = await axios.get('/api/admin/dashboard');
-        setCardData(response.data);
-      } catch (error) {
-        console.error('Error fetching dashboard data', error);
-      }
-    };
-
-    fetchDashboardData();
-  }, []); */
 
 
   // Hard-coded data for the cards
   const cardData = {
-    totalUsers: 150, // Hard-coded value for total users
-    totalBoardingOwners: 75, // Hard-coded value for total boarding owners
-    totalBoardingPlaces: 50, // Hard-coded value for total boarding places
+    totalUsers: 12, // Hard-coded value for total users
+    totalBoardingOwners: 3, // Hard-coded value for total boarding owners
+    totalBoardingPlaces: 6, // Hard-coded value for total boarding places
   };
 
   return (

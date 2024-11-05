@@ -29,20 +29,16 @@ public class SignInController {
     @PostMapping("/SignIn")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest request) {
         try {
-            // Authenticate the user
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
 
-            // Load user details and fetch the LoginUser entity
             final UserDetails userDetails = signInService.loadUserByUsername(request.getEmail());
             LoginUser user = signInService.findByEmail(request.getEmail());
 
-            // Generate JWT token
             final String jwt = jwtUtil.generateToken(userDetails, user.getEmail(), user.getRole(), user.getId());
 
 
-            // Create response with both JWT and role
             AuthenticationResponse authResponse = new AuthenticationResponse(jwt, user.getRole());
             return ResponseEntity.ok(authResponse);
 

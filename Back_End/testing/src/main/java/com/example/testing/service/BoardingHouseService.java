@@ -77,13 +77,11 @@ public class BoardingHouseService {
         dto.setPrice(boardingHouse.getPrice());
         dto.setEmail(boardingHouse.getEmail());
 
-        // Convert Room entities to RoomDto
         List<RoomDto> roomDtos = boardingHouse.getRooms().stream()
                 .map(room -> new RoomDto(room.getId(), room.getTitle(), room.getCapacity(), room.getIsavailable()))
                 .collect(Collectors.toList());
         dto.setRooms(roomDtos);
 
-        // Convert Facility entities to FacilityDto
         List<FacilityDto> facilityDtos = boardingHouse.getFacilities().stream()
                 .map(facility -> new FacilityDto(facility.getId(), facility.getName()))
                 .collect(Collectors.toList());
@@ -147,7 +145,6 @@ public class BoardingHouseService {
     }
     private final String uploadDirectory = "D:/final project/group project/group-project-cs/Back_End/testing/src/main/resources/uploads/";
 
-    // Method to save uploaded images
     public void saveImages(Integer boardingHouseId, MultipartFile[] files) throws IOException {
         BoardingHouse boardingHouse = boardingHouseRepo.findById(boardingHouseId)
                 .orElseThrow(() -> new IllegalArgumentException("BoardingHouse not found"));
@@ -162,7 +159,6 @@ public class BoardingHouseService {
             Path filePath = boardingHousePath.resolve(file.getOriginalFilename());
             file.transferTo(filePath);
 
-            // Save each image path and associate it with the BoardingHouse
             Image image = new Image();
             image.setFilePath(filePath.toString());
             image.setBoardingHouse(boardingHouse);
@@ -172,7 +168,6 @@ public class BoardingHouseService {
         imageRepo.saveAll(savedImages);
     }
 
-    // Method to get all image paths for a boarding house
     public List<Path> getImages(Integer boardingHouseId) throws IOException {
         Path boardingHousePath = Paths.get(uploadDirectory + boardingHouseId);
         List<Path> imagePaths = new ArrayList<>();
@@ -186,15 +181,13 @@ public class BoardingHouseService {
         return imagePaths;
     }
 
-    // Method to get an image resource by name
     public FileSystemResource getImageResource(Integer boardingHouseId, String imageName) throws IOException {
         Path imagePath = Paths.get(uploadDirectory + boardingHouseId + "/" + imageName);
 
-        // Check if the image file exists and return as resource
         if (Files.exists(imagePath)) {
             return new FileSystemResource(imagePath.toFile());
         } else {
-            return null; // Return null if file doesn't exist
+            return null;
         }
     }
     public long countAllHouses() {

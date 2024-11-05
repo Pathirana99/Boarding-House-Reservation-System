@@ -24,28 +24,24 @@ public class RoomController {
         RoomDto savedRoom = roomService.saveRoom(roomDto, boardingHouseId);
         return new ResponseEntity<>(savedRoom, HttpStatus.CREATED);
     }
-    // Get all rooms
     @GetMapping("getRooms")
     public ResponseEntity<List<RoomDto>> getAllRooms() {
         List<RoomDto> rooms = roomService.getAllRooms();
         return ResponseEntity.ok(rooms);
     }
 
-    // Get a room by ID
     @GetMapping("/{id}")
     public ResponseEntity<Room> getRoomById(@PathVariable Integer id) {
         Room room = roomService.getRoomById(id).orElseThrow(() -> new RuntimeException("Room not found"));
         return ResponseEntity.ok(room);
     }
 
-    // Update a room
     @PutMapping("/{id}")
     public ResponseEntity<Room> updateRoom(@PathVariable Integer id, @RequestBody Room roomDetails) {
         Room updatedRoom = roomService.updateRoom(id, roomDetails);
         return ResponseEntity.ok(updatedRoom);
     }
 
-    // Delete a room
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRoom(@PathVariable Integer id) {
         roomService.deleteRoom(id);

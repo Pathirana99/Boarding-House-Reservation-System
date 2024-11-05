@@ -25,4 +25,9 @@ public class ContactController {
     public Optional<Contact> getMessage(@RequestParam Integer id){
         return service.getMessage(id);
     }
+    @PostMapping("/feedback")
+    public ResponseEntity<String> feedback(@RequestBody ContactDto contactDto) {
+        service.sendFeedbackEmail(contactDto);
+        return new ResponseEntity<>("Feedback email sent successfully.", HttpStatus.OK);
+    }
 }

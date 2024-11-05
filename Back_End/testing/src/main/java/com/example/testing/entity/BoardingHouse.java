@@ -65,7 +65,7 @@ public class BoardingHouse {
         this.email = email;
         this.price = Double.valueOf(price);
         this.street = street;
-        this.boardingOwner = boardingOwner; // Set the boarding owner
+        this.boardingOwner = boardingOwner;
     }
     public Integer getId() {
         return id;
