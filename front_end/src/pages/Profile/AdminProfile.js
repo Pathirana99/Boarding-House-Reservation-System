@@ -10,9 +10,9 @@ const AdminProfile = () => {
 
   // Hard-coded data for the cards
   const cardData = {
-    totalUsers: 25, // Hard-coded value for total users
-    totalBoardingOwners: 10, // Hard-coded value for total boarding owners
-    totalBoardingPlaces: 2, // Hard-coded value for total boarding places
+    totalUsers: 12, // Hard-coded value for total users
+    totalBoardingOwners: 3, // Hard-coded value for total boarding owners
+    totalBoardingPlaces: 6, // Hard-coded value for total boarding places
   };
 
   return (

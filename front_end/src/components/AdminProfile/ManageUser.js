@@ -22,7 +22,7 @@ const ManageUser = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/loginuser/getAllLoginuser');
+            const response = await axios.get('http://localhost:8080/loginuser/getAllLoginUsersWithoutAdmin');
             setUsers(response.data);
         } catch (error) {
             console.error("Error fetching users:", error);

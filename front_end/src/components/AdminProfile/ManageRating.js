@@ -65,7 +65,7 @@ const ManageRating = () => {
                 <Button variant="contained" onClick={() => handleApprove(rating.id)} sx={{margin:'5px',backgroundColor:'#72d6c9','&:hover': {backgroundColor:'#3DC0B9'}}}>
                   Approve
                 </Button>
-                <Button variant="contained" onClick={() => handleReject(rating.id)} sx={{margin:'5px',backgroundColor:'#72d6c9','&:hover': {backgroundColor:'#3DC0B9'}}}>
+                <Button variant="contained" onClick={() => handleReject(rating.id)} sx={{margin:'5px',backgroundColor:'red','&:hover': {backgroundColor:'#AB3448'}}}>
                   Reject
                 </Button>
               </TableCell>
