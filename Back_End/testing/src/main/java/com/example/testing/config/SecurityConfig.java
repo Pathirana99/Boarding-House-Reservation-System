@@ -54,8 +54,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Disable CSRF, consider enabling it in production
-                .cors(cors -> cors.disable()) // Disable CORS for now; configure if needed
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.disable()) 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/loginuser/saveLoginUser", "/SignInUser/SignIn","/loginuser/getAllLoginuser","/loginuser/{id}","/loginuser/forgotPassword", "/loginuser/resetPassword","/loginuser/password/","/ratings/submit","/loginuser/{id}/updatePassword",
                                 "/boardingHouse/saveBoarding", "/saveOwnerWithHousesAndRooms/{loginUserId}",
