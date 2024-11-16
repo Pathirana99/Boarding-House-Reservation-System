@@ -14,7 +14,6 @@ import java.nio.file.Path;
 import java.util.List;
 
 
-
 @RestController
 @RequestMapping("/boardingHouse")
 public class BoardingHouseController {
