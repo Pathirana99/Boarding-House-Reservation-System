@@ -29,7 +29,7 @@ public class BoardingOwnerController {
             BoardingOwner savedOwner = service.saveOwnerWithHousesAndRooms(loginUserId, ownerDto);
             return new ResponseEntity<>(savedOwner, HttpStatus.CREATED);
         } catch (Exception e) {
-            // Log the error message and stack trace
+            
             e.printStackTrace();
             return new ResponseEntity<>("Error occurred: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
